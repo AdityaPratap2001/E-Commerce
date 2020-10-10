@@ -1,0 +1,66 @@
+.productform{
+  display: flex;
+  flex-direction: column;
+  padding: 4% 10%;
+  position: relative;
+}
+.productform>div{
+  display: flex;
+  justify-content: space-between;
+  /* height: 30px; */
+  margin-bottom: 32px;
+}
+
+/* .productform input,select{ */
+.productform .dataEntryDivs{
+  position: absolute;
+  left: 50%;
+  height: 47px;
+  width: 50%;
+}
+.productform input,select{
+  height: 30px;
+  width: 70%;
+}
+.productform .custom-select{
+  margin: 0;
+  width: 70% !important;
+  transform: translateX(0px);
+}
+.productform .imgUpload input{
+  padding: 0;
+}
+.productform span{
+  width: fit-content
+}
+.productform>.dataEntryDivs{
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width:992px){
+  .card-body{
+    width: 100%;
+  }
+  .productform .dataEntryDivs{
+    left: 40%;
+  }
+  .productform .custom-select{
+    width: 80%;
+  }
+  .productform input,select{
+    width: 80%;
+  }
+  .productform{
+    padding: 4% 2%;
+  }
+}
+@media (max-width:475px){
+  .productform{
+    padding: 0 0;
+    font-size: 14px;
+  }
+  .productform .dataEntryDivs{
+    left: 55%;
+  }
+}

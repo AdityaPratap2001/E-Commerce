@@ -1,0 +1,86 @@
+/* Colors */
+/*
+dark blue: #476A6F
+light blue: #258EA6
+dark green: #519E8A
+medium green: #7EB09B
+light green: #A3C4BC
+*/
+
+form {
+  width: 100%;
+  /* display: flex; */
+  flex-wrap: wrap;
+}
+.signupFormForm{
+  height: 100%;
+}
+.signupFormForm > div{
+  margin-bottom: 3px;
+  position: relative;
+  margin-bottom: 12px;
+}
+.signupFormForm span{
+  position: absolute;
+}
+label {
+  font-size: 0.8em;
+  margin-bottom: 0.25em;
+  color: #222;
+  font-weight: lighter;
+}
+
+input {
+  padding: 10px 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #cfcfcf;
+  font-size: 13px;
+}
+
+input::placeholder {
+  font-size: 13px;
+  font-weight: 450;
+  color: #999;
+}
+
+input.error {
+  border: 1.5px solid red;
+}
+
+form{
+  height: 80%;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  justify-content: flex-end;
+  height: 10px;
+  width: 99%;
+}
+.genderError{
+  justify-content: flex-start;
+  margin-left: 23%;
+}
+.signup img{
+  height: 8vh;
+  transform: scale(2.4);
+}
+.custom-select{
+  transform: translateX(10px);
+}
+button{
+  margin: auto;
+}
+.selectContainerDiv{
+  text-align: left;
+}
+
+
+
+
+
+

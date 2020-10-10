@@ -1,0 +1,52 @@
+.searchCont>.sidebar{
+  height: 70vh;
+}
+.searchCont>.searchDisplayCont h5{
+  /* padding: 4% 3%; */
+  padding-left: 3%;
+}
+.searchLoad>.searchLoadImg{
+  width: 50%;
+}
+.searchLoad>.searchEmpty{
+  width: 50%;
+}
+
+@media (max-width:901px){
+  .searchDisplayCont{
+    margin-left: 20vw;
+  }
+}
+@media (max-width:687px){
+  .searchDisplayCont{
+    margin-left: 22vw;
+  }
+}
+@media (max-width:600px){
+  .searchDisplayCont{
+    margin-left: 23vw;
+  }
+  .searchDisplayCont h5{
+    font-size: 14px;
+  }
+}
+@media (max-width:581px){
+  .searchDisplayCont{
+    margin-left: 25vw;
+  }
+}
+@media (max-width:525px){
+  .searchDisplayCont{
+    margin-left: 28vw;
+  }
+}
+@media (max-width:447px){
+  .searchDisplayCont{
+    margin-left: 35vw;
+  }
+}
+@media (max-width:361px){
+  .searchDisplayCont{
+    margin-left: 36vw;
+  }
+}

@@ -1,0 +1,148 @@
+.sellerPage{
+  overflow-x: hidden;
+}
+.sellerNav i{
+  font-size: 18.5px;
+}
+.sellerNav i:hover{
+  transform: scale(1.3);
+  color: black;
+}
+.sellerBanner img{
+  margin-top: 20vh;
+  width: 100vw;
+}
+.sellerIntro{
+  padding: 0 5%;
+  margin-top: 40px;
+}
+.sellerIntro h5,.sellerBenefits h5{
+  font-size: 24px;
+  font-weight: 700;
+  width: fit-content;
+  padding-bottom: 3px;
+  border-bottom: black 2px solid;
+}
+.sellerBenefits h5{
+  font-size: 22px;
+}
+.sellerIntro h6{
+  font-size: 18px;
+  padding-right: 10%;
+  margin-top: 14px;
+  line-height: 23px;
+  font-weight: 400;
+  pointer-events: none;
+}
+.sellerBenefits{
+  padding: 0 5%;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.sellerGrowCont{
+  padding: 0 15%;
+  margin: auto;
+}
+.sellerBenefits .sellerBenefitsCont{
+  display: flex;
+  /* margin-top: 25px; */
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.sellerBenefits .sellerBenefitsCont>div{
+  margin: 0 30px;
+  margin-top: 25px;
+  border-radius: 10px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+  /* box-shadow: 0 2px 16px 4px rgba(40,44,63,0.4); */
+  display: flex;
+  flex-direction: column;
+  padding: 5% 2%;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+}
+.sellerBenefits .sellerBenefitsCont>div h5{
+  font-size: 20px;
+  border-bottom: none;
+}
+.sellerBenefits .sellerBenefitsCont>div h6{
+  font-size: 15px;
+  font-weight:400;
+}
+.sellerBenefits .sellerBenefitsCont>div i{
+  font-size: 44px;
+  margin-bottom: 20px;
+}
+.sellerPage .startSelling{
+  margin: 70px auto;
+  text-align: center;
+}
+.sellerPage .startSelling button{
+  width: 250px;
+}
+
+@media (max-width:600px){
+  .sellerGrowCont{
+    padding: 0 0%;
+    margin: auto;
+  }
+}
+@media (max-width:900px){
+  .sellerBenefits .sellerBenefitsCont>div{
+    height: 260px;
+    width: 260px;
+  }
+  .sellerBanner img{
+    height: 40vh;
+  }
+
+  .sellerPage>.sellerIntro h5{
+    font-size: 19px;
+  }
+  .sellerPage>.sellerIntro h6{
+    font-size: 16px;
+  }
+
+  .sellerPage>.sellerBenefits h5{
+    font-size: 20px;
+  }
+  .sellerPage>.sellerBenefits h6{
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+@media (max-width:701px){
+  .sellerBanner img{
+    margin-top: 16vh;
+  }
+}
+@media (max-width:650px){
+  .sellerBanner img{
+    height: 35vh;
+  }
+  .sellerPage>.sellerBenefits h6{
+    font-size: 16px;
+  }
+  .sellerPage>.sellerIntro h6{
+    line-height: 20px;
+  }
+}
+@media (max-width:500px){
+  .sellerBanner img{
+    height: 30vh;
+  }
+}
+@media (max-width:400px){
+  .sellerBanner img{
+    height: 28vh;
+  }
+}
+

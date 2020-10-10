@@ -1,0 +1,121 @@
+.backdrop{
+  background-color: #302c2c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+  width: 100%;
+}
+.signup_box{
+  width: 720px;
+  height: 77vh;
+  display: flex;
+  background-color: #ccc;
+}
+.slideshow{
+  width: 50%;
+}
+.slide{
+  height: 100%;
+  transform: translateY(-18px);
+  margin-bottom: 0 !important;
+}
+.carousel-item{
+  height: 100% !important;
+}
+.carousel_size{
+  height: 100% !important;
+}
+.indicators{
+  margin-bottom: 0px !important;
+}
+.slideshow img{
+  background-size: cover;
+  height: 500px !important;
+}
+.signup{
+  width: 50%;
+  text-align: center;
+  padding: 2% 4%;
+}
+.signup h2{
+  margin-bottom: 20px;
+}
+.signup h5{
+  font-size: 14px;
+  float: left;
+  font-weight: 350; 
+  transform: translateX(2px);
+  display: block;
+  margin-top: 7px;
+  margin-bottom: 3px;
+  /* height: 10px; */
+}
+.signup input{
+  width: 100%;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 4%;
+  padding-left: 4%;
+  height: 32px;
+  outline: none;
+  border: none;
+}
+.signup button{
+  width: 70%;
+  border-radius: 5px;
+  border: solid 1.8px black;
+  padding: 6px;
+  font-size: 14px;
+  margin-top: 10px;
+  color:  rgb(255, 255, 255);
+  background-color: black;
+  outline: none;
+  margin-top: 18px;
+}
+.signup button:hover{
+  background-color: rgb(32, 29, 29);
+  border: black 1.8px solid;
+  color: white;
+}
+select{
+  height: 30px !important;
+  font-size: 14px !important;
+  padding-top: 2px !important;
+  width: 30% !important;
+  margin-top: 6px;
+}
+h6{
+  font-size: 11px;
+  font-weight: 520;
+  margin-top: 5px;
+  color: black;
+  /* transform: translateX(39%); */
+}
+h6:hover{
+  text-decoration: underline;
+  color: black;
+}
+.link{
+  width: 100%;
+}
+@media (max-width:780px){
+  .signup_box{
+    margin: 0px 30px
+  }
+}
+@media (max-width:610px){
+  .slideshow{
+    display: none;
+  }
+  .signup{
+    width: 70%;
+    margin: auto;
+  }
+}
+@media (max-width:450px){
+  select{
+    width: 44% !important;
+  }
+}

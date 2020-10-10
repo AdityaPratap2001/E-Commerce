@@ -1,0 +1,30 @@
+.offerSection{
+  height: fit-content;
+  margin-bottom: 14px;
+  height: 140px;
+}
+.offers_carousel img{
+  height: 20vh;
+} 
+.offers_carousel{
+  margin: 0px auto;
+} 
+.offers_carousel li{
+  display: none;
+}
+@media (max-width:700px){
+  .offers_carousel img{
+    height: 15vh;
+  }
+  .offerSection{
+    height: 18vh;
+  }
+}
+@media (max-width:400px){
+  .offers_carousel img{
+    height: 10vh;
+  }
+  .offerSection{
+    height: 13vh;
+  }
+}

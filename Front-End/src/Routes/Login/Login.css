@@ -1,0 +1,135 @@
+.backdrop{
+  background-color: #302c2c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+  width: 100%;
+  margin-top: 12vh;
+}
+.login_box{
+  width: 720px;
+  height: 75vh;
+  display: flex;
+  background-color: #ccc;
+}
+.slideshow{
+  width: 50%;
+}
+.slide{
+  height: 100%;
+  margin-top: 18px !important;
+}
+.carousel_size{
+  height: 100% !important;
+}
+.indicators{
+  margin-bottom: 0px !important;
+}
+.slideshow img{
+  background-size: cover;
+  height: 500px !important;
+  /* transform: translateY(-300px); */
+}
+.login{
+  width: 50%;
+  text-align: center;
+  padding: 5.7% 4%;
+}
+.login form{
+  height: 260px;
+}
+.login img{
+  height: 10vh;
+  /* transform: scale(2.2); */
+}
+.login h6{
+  color: rgb(3, 55, 150);
+  color: black;
+  font-weight: 700;
+  margin: 10% 0 10% 0;
+  font-size: 16px;
+}
+.login h4{
+  font-size: 12px;
+  font-weight: 400;
+  color: black;
+  transform: translateY(-10px);
+}
+.login h4:hover{
+  text-decoration: underline;
+}
+.login span{
+  transform: translateY(-18px);
+}
+.login h5{
+  font-size: 14px;
+  float: left;
+  margin-bottom: 20px;
+  height: 18px;
+  font-weight: 350; 
+  /* transform: translateX(18px); */
+}
+.login input{
+  width: 100%;
+  /* margin-bottom: 20px; */
+  border-radius: 4px;
+  transform: translateY(-20px);
+  font-size: 14px;
+  padding: 6%;
+  padding-left: 4%;
+  height: 30px;
+  outline: none;
+  border: none;
+}
+.login .password{
+  transform: translateY(-30px);
+}
+.login .password_input{
+  transform: translateY(-30px);
+}
+.login button{
+  height: 40px;
+  margin: 30px auto 20px;
+  width: 75%;
+  border-radius: 5px;
+  border: solid 1.8px black;
+  padding: 7px;
+  color:  rgb(255, 255, 255);
+  background-color: black;
+  outline: none;
+}
+.login button:hover{
+  background-color: rgb(32, 29, 29);
+  border: black 1.8px solid;
+  color: white;
+}
+.link{
+  width: 100%;
+  text-align: center;
+}
+.login .forgotPass{
+  font-weight: 400;
+  font-size: 11px;
+  text-decoration: underline;
+  color: black;
+  text-align: start;
+  position: absolute;
+  cursor: pointer;
+  margin-top: 0px;
+}
+
+@media (max-width:780px){
+  .login_box{
+    margin: 0px 30px
+  }
+}
+@media (max-width:610px){
+  .slideshow{
+    display: none;
+  }
+  .login{
+    width: 70%;
+    margin: auto;
+  }
+}

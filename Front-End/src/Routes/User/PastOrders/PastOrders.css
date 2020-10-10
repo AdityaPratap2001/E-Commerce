@@ -1,0 +1,16 @@
+.pastOrders{
+  padding: 20px 6%;  
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+
+.pastOrders .orderHeading{
+  text-align: center;
+}
+.noOrders{
+  align-items: center;
+  align-self: center;
+  text-align: center;
+}

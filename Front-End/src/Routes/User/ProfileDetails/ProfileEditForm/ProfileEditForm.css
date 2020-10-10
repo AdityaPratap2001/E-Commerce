@@ -1,0 +1,61 @@
+.changeDetailsForm{
+  display: flex;
+  flex-direction: column;
+}
+.changeDetailsForm>div>div{
+  display: flex;
+  margin-top: 20px;
+}
+.changeDetailsForm>div{
+  position: relative;
+  margin-bottom: 20px;
+}
+.changeDetailsForm input{
+  height: 30px;
+  width: 40%;
+  position: absolute;
+  left: 25%;
+}
+.changeDetailsForm select{
+  margin-top: 0;
+  position: absolute;
+  height: 30px !important;
+  left: 23.5%;
+}
+.changeDetailsForm h5{
+  font-size: 14px;
+  font-weight: 400;
+}
+.changeDetailsForm span{
+  display: block;
+  height: 16px;
+  position: absolute;
+  left: 25%;
+  margin-top: 5px;
+  width: fit-content;
+}
+.changeDetailsForm .genderError{
+  margin-left: 0px;
+}
+.changeDetailsForm button{
+  margin-top: 20px;
+  width: 150px;
+}
+.changeDetailsForm i{
+  font-size: 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+@media (max-width:460px){
+  .changeDetailsForm select,.changeDetailsForm input{
+    left: 30%;
+    width: 60%;
+  }
+  .changeDetailsForm span{
+    left: 30%
+  }
+}

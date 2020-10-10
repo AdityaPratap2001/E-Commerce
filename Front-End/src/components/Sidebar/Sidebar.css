@@ -1,0 +1,27 @@
+.main_category{
+  margin-bottom: 15px;
+}
+.sub_category{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: translateX(22px);
+  /* width: fit-content; */
+}
+.sub_category a{
+  font-size: 15px;
+  font-weight: 375;
+}
+a{
+  color: black;
+}
+a:hover{
+  text-decoration: none;
+}
+
+
+@media (max-width:360px){
+  .sub_category{
+    transform: translateX(10px);
+  }
+}

@@ -1,0 +1,73 @@
+.category{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 270px;
+  height: 300px;
+  /* box-shadow: 15px 15px 20px #ccc; */
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+  margin: 20px 55px;
+}
+.shift_right{
+  transform: translateX(40%);
+}
+.shift_left{
+  transform: translateX(-40%);
+}
+.display_categories .Men{
+  background-image: url('../../../assets/Men.png');
+  background-size: cover;
+  background-position: center;
+}
+.display_categories .Women{
+  background-image: url('../../../assets/Women.png');
+  background-size: cover;
+  background-position: center;
+}
+.display_categories .Kids{
+  background-image: url('../../../assets/Kids.png');
+  background-size: cover;
+  background-position: center;
+}
+.display_categories .HomeLiving{
+  background-image: url('../../../assets/home.png');
+  background-size: cover;
+  background-position: center;
+}
+.display_categories .Bags{
+  background-image: url('../../../assets/bags.png');
+  background-size: cover;
+  background-position: center;
+}
+
+
+@media (max-width:1143px){
+  .category{
+    width: 243px;
+    height: 270px;
+  }
+}
+@media (max-width:1062px){
+  .shift_right{
+    transform: translateX(0%);
+  }
+  .shift_left{
+    transform: translateX(0%);
+  }
+}
+@media (max-width:810px){
+  .category{
+    width: 216px;
+    height: 240px;
+  }
+}
+@media (max-width:692px){
+  .category{
+    width: 180px;
+    height: 200px;
+  }
+}

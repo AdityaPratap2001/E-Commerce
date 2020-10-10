@@ -1,0 +1,12 @@
+.editProf{
+  position: absolute;
+  right: 7px;
+  z-index: 4;
+  font-size: 12px;
+  top: 3px;
+  padding: 0.5%;
+  cursor: pointer;
+}
+.userDetailsDisplay{
+  position: relative;
+}

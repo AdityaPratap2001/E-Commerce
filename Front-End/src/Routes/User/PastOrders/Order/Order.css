@@ -1,0 +1,19 @@
+.order{
+  border: #ccc 1.6px solid;
+  margin-bottom: 30px;
+  padding: 10px;
+}
+.order .orderDate{
+  font-size: 14px;
+  font-weight: 650;
+  /* border-bottom: #ccc 1.6px solid; */
+  padding-bottom: 7px;
+}
+.amtPaid{
+  font-size: 13px;
+  font-weight: 650;
+  text-align: end;
+  justify-content: right;
+  border-top: #ccc 1.6px solid;
+  padding-top: 10px;
+}

@@ -1,0 +1,79 @@
+.sellerSearchItem{
+  width: 80%;
+  border: #ccc 1.5px solid;
+  margin: 20px auto;
+}
+
+.sellerSearchItemHeader{
+  background-color: rgba(0,0,0,.07);
+  height: 50px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.sellerSearchItemBody{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}
+.sellerItemLeft{
+  width: 50%;
+}
+.sellerItemRight{
+  width: 50%;
+}
+.sellerSearchItemBody>.sellerItemLeft>.dataFields{
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+.sellerSearchItemBody>.sellerItemRight>.dataFields{
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+.sellerSearchItemBody>.sellerItemLeft>.dataFields>.dataLabel{
+  font-weight: 500;
+  margin-right: 20px;
+}
+.sellerSearchItemBody>.sellerItemRight>.dataFields>.dataLabel{
+  font-weight: 500;
+  margin-right: 20px;
+}
+.sellerSearchItemBody>.sellerItemLeft>.dataFields>.dataAns{
+  position: absolute;
+  left: 50%;
+}
+.sellerSearchItemBody>.sellerItemRight>.dataFields>.dataAns{
+  position: absolute;
+  left: 50%;
+}
+
+@media (max-width : 975px){
+  .sellerSearchItemBody{
+    flex-direction: column;
+  }
+  .sellerItemLeft{
+    width: 100%;
+  }
+  .sellerItemRight{
+    width: 100%;
+  }
+  .sellerSearchItemBody{
+    padding: 0 0;
+  }
+  .sellerSearchItemBody>.sellerItemLeft>.dataFields{
+    padding: 6px;
+    padding-left: 10px;
+  }
+  .sellerSearchItemBody>.sellerItemRight>.dataFields{
+    padding: 6px;
+    padding-left: 10px;
+  }
+}

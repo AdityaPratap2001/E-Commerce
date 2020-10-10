@@ -1,0 +1,115 @@
+.newsletter{
+  width: 90%;
+  height: 400px;
+  /* background-color: #ccc;
+  background-color: #ece6e6; */
+  background-color: rgba(233, 229, 229, 0.973);
+  background-image: url('../../assets/newsletter.jpg');
+                    /* linear-gradient(rgb(70, 63, 63)); */
+  background-image: linear-gradient(to bottom, rgba(116, 34, 34, 0.5), rgba(21, 37, 53, 0.5), rgba(21, 37, 53, 1)), 
+                    url('../../assets/newsletter.jpg');
+  background-size: cover;
+  color: #fff;
+  /* border-radius: 15px; */
+  margin: auto;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+}
+.newsletter div{
+  height: 100%;
+  text-align: center;
+  padding: 4.7% 5%;
+  font-family: 'Poppins',sans-serif;
+}
+.newsletter form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.newsletter .newsletter_input{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+.newsletter h5{
+  margin-top: 20px;
+  font-size: 18px;
+}
+.newsletter input{
+  outline: none;
+  /* margin:  0 10%; */
+  width: 60%;
+  font-size: 12px;
+  height: 35px;
+  padding: 5px; 
+  padding: 2%;
+  padding-left: 10px;
+}
+.newsletter button{
+  margin-top: 25px;
+  width: 25%;
+  height: 40px;
+  background-color: transparent;
+  color: #fff;
+}
+.newsletter button:hover{
+  background-color: lavender;
+}
+.newsletter i{
+  font-size: 30px;
+  margin: 20px 0;
+}
+.newsletter .submitted{
+  background-color: transparent;
+  border: #fff 1.3px solid;
+  width: 50%;
+  color: #fff;
+}
+.newsletter .submitted:hover{
+  color: rgb(30, 45, 87);
+  background-color: #fff;
+  font-weight: 400;
+}
+
+
+@media (max-width:400px){
+  .newsletter button{
+    width: 50%;
+  }
+}
+@media (max-width:700px){
+  .newsletter h5{
+    font-size: 14px;
+  }
+  .newsletter h4{
+    font-size: 20px;
+  }
+  .newsletter input{
+    height: 30px;
+  }
+  .newsletter div{
+    padding: 15% 0;
+  }
+  .newsletter button{
+    height: 40px;
+    font-size: 15px;
+  }
+}
+@media (max-width:700px) and (min-width:520px){
+  .newsletter div{
+    padding: 10% 0;
+  }
+}
+@media (max-width:700px){
+  .newsletter{
+    height: 300px;
+  }
+  .newsletter div{
+    padding: 1.4% 5%;
+  }
+}

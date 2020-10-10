@@ -1,0 +1,68 @@
+.userDetailsDisplay{
+  border: #ccc 1.2px solid;
+  margin-top: 20px;
+  padding: 2% 3%;
+}
+.userDetailsDisplay>div{
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 5px 0;
+  position: relative;
+  font-weight: 500;
+  font-size: 15px;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+.userDetailsDisplay>div>.details{
+  position: absolute;
+  left: 30%;
+  font-weight: 400;
+}
+.userDetailsDisplay>div>.gender{
+  text-transform: capitalize;
+}
+.rightDisplay{
+  overflow-x: hidden;
+}
+.rightDisplay>.productForm{
+  margin-top: 30px;
+}
+
+.rightDisplay>.sellYourOwn h5{
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.searchForSeller{
+  width: 88vw;
+  order: 1;
+  margin-top: 30px;
+  margin-bottom: 60px;
+  border: #ccc 1.4px solid;
+}
+
+.collapseForm{
+  background-color: #fff;
+  margin-top: 0px !important;
+  padding-top: 0px;
+  width: 100% !important;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width:1150px){
+  .userDetailsDisplay>div>.details{
+    left: 40%;
+  }
+}
+@media (max-width:550px){
+  .userDetailsDisplay>div>.details{
+    left: 50%; 
+  }
+}
