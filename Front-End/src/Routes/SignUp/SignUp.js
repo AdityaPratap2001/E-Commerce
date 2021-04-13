@@ -29,7 +29,7 @@ class SignUp extends Component {
       gender : details.gender,
       roles : details.user,
     }
-    // console.log(userData);
+    console.log(userData);
 
     const sendData = (userData) =>{
       
