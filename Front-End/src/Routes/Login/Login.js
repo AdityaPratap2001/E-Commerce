@@ -37,7 +37,7 @@ class Login extends Component {
 
       ServerService.login(userData)
         .then((response)=>{
-          // console.log(response);
+          console.log(response);
           // console.log(response.data.jwt);
           if(response.status === 200){
             if(response.data !== 'Not Verified!'){

@@ -101,7 +101,7 @@ class App extends Component {
         break;
       case "password":
         formErrors.password =
-          value.length < 6 ? "minimum 6 characaters required" : "";
+          value.length < 5 ? "minimum 6 characaters required" : "";
         break;
       case "gender":
         formErrors.gender =

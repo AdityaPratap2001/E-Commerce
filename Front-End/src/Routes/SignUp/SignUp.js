@@ -44,7 +44,7 @@ class SignUp extends Component {
         })
         .catch(error => {
           this.setState({statusOk : false});
-          // console.log(error);
+          console.log(error);
         })
     }
     sendData(userData);

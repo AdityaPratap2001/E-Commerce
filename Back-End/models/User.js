@@ -11,6 +11,12 @@ const UserSchema = new Schema({
         type: String,
         require: true,
     },
+    token:{
+        type: String,
+    },
+    isVerified:{
+        type: Boolean,
+    },
     userType:{
         type: String,
     },
@@ -25,7 +31,31 @@ const UserSchema = new Schema({
     lastName:{
         type: String,
         required: true,
-    }
+    },
+    cart: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+          },
+        },
+      ],
+      whishlist: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product"
+          },
+        },
+      ],
+      pushedProducts: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product"
+          },
+        },
+      ],
 
     
 });
