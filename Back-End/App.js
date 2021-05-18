@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const authRoute = require('./routes/Auth');
+const userRoute = require('./routes/User');
 
 const app = express();
 
@@ -24,9 +25,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authRoute);
+app.use(authRoute,userRoute);
 
-const MONGO_URI = "mongodb+srv://Aditya:aditya@cluster0.ke6yn.mongodb.net/E-Commerce?retryWrites=true&w=majority";
+// const MONGO_URI = "mongodb+srv://Aditya:aditya@cluster0.ke6yn.mongodb.net/E-Commerce?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://Aditya:aditya@cluster0.ke6yn.mongodb.net/E-Commerce";
 
 mongoose.connect(MONGO_URI,{ useUnifiedTopology: true,useNewUrlParser: true })
   .then(()=>{
