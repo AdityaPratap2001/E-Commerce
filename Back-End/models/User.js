@@ -39,7 +39,7 @@ const UserSchema = new Schema({
       },
     },
   ],
-  whishlist: [
+  wishlist: [
     {
       productId: {
         type: Schema.Types.ObjectId,

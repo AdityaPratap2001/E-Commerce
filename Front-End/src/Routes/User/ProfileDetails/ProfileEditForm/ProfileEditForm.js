@@ -37,7 +37,7 @@ class App extends Component {
       gender: "",
     },
   };
-// bahjbjh
+
   handleSubmit = (e) => {
     e.preventDefault();
 

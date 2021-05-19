@@ -28,7 +28,7 @@ class ProfileDetails extends Component {
 
     ServerService.editProfileDetails(newdetails)
      .then(res => {
-      //  console.log(res);
+       console.log(res);
        if(res.status === 200){
          window.location.reload();
        }
