@@ -48,8 +48,8 @@ class Login extends Component {
 
               ServerService.fetchDetailsByUserID(userData.username)
                 .then(res => {
-                  // console.log(res);
-                  if(res.data.roles === 'Seller'){
+                  console.log(res);
+                  if(res.data.role === 'Seller'){
                     this.setState({loading : false});
                     this.setState({redirect : '/Seller'});
                     localStorage.setItem('role','seller');

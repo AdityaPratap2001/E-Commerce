@@ -86,12 +86,13 @@ class SellerProfile extends Component {
       material: details.material,
       prodType: details.type,
       sellerUsername: userId,
+      image: details.selectedFile
     };
-    // console.log(prodDetails);
+    console.log(prodDetails);
 
     ServerService.pushProduct(prodDetails)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
 
         this.setState({
           showPopup: true,
@@ -114,22 +115,22 @@ class SellerProfile extends Component {
         }, 1400);
       });
 
-    let fd = new FormData();
-    fd.append("image", details.selectedFile);
-    // console.log(details.title);
-    // console.log(fd);
-    // const imgDetail = {
-    //   image : details.selectedFile,
-    // }
-    // console.log(imgDetail);
-    axios
-      .post(`/image/${details.title}`, fd)
-      .then((res) => {
-        // console.log(res);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    // let fd = new FormData();
+    // fd.append("image", details.selectedFile);
+    // // console.log(details.title);
+    // // console.log(fd);
+    // // const imgDetail = {
+    // //   image : details.selectedFile,
+    // // }
+    // // console.log(imgDetail);
+    // axios
+    //   .post(`/image/${details.title}`, fd)
+    //   .then((res) => {
+    //     // console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     // console.log(err);
+    //   });
   };
 
   hidePopup = () => {

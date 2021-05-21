@@ -14,13 +14,13 @@ exports.postUserSignup = (req, res, next) => {
   console.log(req.body.username);
   const email = req.body.username;
   const errors = validationResult(req);
-  let genenratedToken = null;
+  let generatedToken = null;
 
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed");
     error.statusCode = 402;
     res.status(402).json({
-      msg: "Email already exists!",
+      msg: "Validation failed!",
     });
     console.log(errors[0]);
     throw error;
@@ -42,7 +42,7 @@ exports.postUserSignup = (req, res, next) => {
       const token = jwt.sign({ email: email },config.TOKEN_KEY,{
         algorithm: "HS256",
       });
-      genenratedToken = token;
+      generatedToken = token;
 
       //Creating new user
       const newUser = new User({
@@ -53,7 +53,7 @@ exports.postUserSignup = (req, res, next) => {
         lastName: req.body.lastName,
         gender: req.body.gender,
         userType: req.body.roles,
-        token: genenratedToken,
+        token: generatedToken,
       });
       return newUser.save();
     })
@@ -62,9 +62,9 @@ exports.postUserSignup = (req, res, next) => {
         msg: "User registered!",
       });
 
-      console.log("SENDING EMAIL____", email);
+      console.log("SENDING EMAIL____");
       //sending email
-      Email.sendLinkEmail(email,genenratedToken);
+      Email.sendLinkEmail(email,generatedToken);
 
     })
     .catch((err) => {
@@ -79,6 +79,11 @@ exports.postUserLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then((userDoc) => {
       console.log(userDoc.password);
+
+      const token = jwt.sign({ email: email },config.TOKEN_KEY,{
+        algorithm: "HS256",
+      });
+      generatedToken = token;
       
       //Password matches
       if (userDoc.password === password) {
@@ -86,7 +91,7 @@ exports.postUserLogin = (req, res, next) => {
         if (userDoc.isVerified) {
           return res.status(200).json({
             jwt: userDoc.token,
-            roles: userDoc.userType,
+            // roles: userDoc.email,
           });
         }
         //Unverified user
@@ -94,8 +99,8 @@ exports.postUserLogin = (req, res, next) => {
           console.log("Email sent with token : ");
           res.status(200).send("Not Verified!");
           //send Email with jwt token in link
-          console.log("SENDING EMAIL____", email);
-          Email.sendLinkEmail(email,genenratedToken);
+          console.log("SENDING EMAIL____");
+          Email.sendLinkEmail(email,generatedToken);
         }
       } 
 

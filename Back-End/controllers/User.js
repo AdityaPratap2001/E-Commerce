@@ -12,7 +12,8 @@ exports.getUserDetails = (req, res, next) => {
         lastName: userData.lastName,
         gender: userData.gender,
         wishElem: userData.wishlist.length,
-        cartElem: userData.cart.length
+        cartElem: userData.cart.length,
+        role: userData.userType
       };
 
       console.log(UserData);
@@ -21,6 +22,8 @@ exports.getUserDetails = (req, res, next) => {
     })
     .catch((err)=>{
       console.log(err);
+      const error = new Error("Something went wrong!")
+      throw error;
     })
 }
 

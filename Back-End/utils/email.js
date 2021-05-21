@@ -2,25 +2,16 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const nodemailer = require("nodemailer");
 const config = require("../config/config");
 
-// const transporter = nodemailer.createTransport(
-//   sendgridTransport({
-//     auth: {
-//       api_key:
-//         "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",
-//     },
-//   })
-// );
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: config.SEND_GRID_KEY,
+    },
+  })
+);
 
 exports.sendLinkEmail = (email, token) => {
-  console.log('TRANSPORTER');
-  const transporter = nodemailer.createTransport(
-    sendgridTransport({
-      auth: {
-        api_key:
-          config.SEND_GRID_KEY,
-      },
-    })
-  );
+  console.log(email,token);
   transporter
     .sendMail({
       to: email,
