@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {NavLink, Redirect} from 'react-router-dom';
-import logoSrc from '../../assets/log.png';
+// import logoSrc from '../../assets/log.png';
+import logoSrc from '../../assets/ecomLogo.png';
 import sellerBanner from '../../assets/sellerBanner2.png';
 import './Seller.css';
 import Footer from '../../components/Footer/Footer';

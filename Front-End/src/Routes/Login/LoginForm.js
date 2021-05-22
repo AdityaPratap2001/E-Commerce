@@ -113,8 +113,8 @@ class LoginForm extends Component {
               </div>
               
               <div className='login'>
-                <img src={logoSrc} alt='logo'/>
-                <h6>Welcome to Click N Ship!</h6>
+                {/* <img src={logoSrc} alt='logo'/> */}
+                <h6 style={{marginTop: '70px'}}>Welcome to Click N Ship!</h6>
                 <form onSubmit={this.handleSubmit}>
 
                   <h5>E-Mail :</h5><br></br>

@@ -5,47 +5,19 @@ const mongoose = require('mongoose');
 const multer = require("multer");
 const config = require('./config/config');
 const cors = require('cors');
+const path = require('path');
 const app = express();
-
-
-
-
-
-
-// MULTER CONFIGURATION
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, "Logo-" + file.originalname);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
 
 
 
 // Middleware for parsing the request body 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
-);
 
 
 
 //CORS HEADERS
+// app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -55,6 +27,42 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
+
+
+
+// MULTER CONFIGURATION
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log('________');
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    console.log('_!!!!!!!!!____');
+    cb(null, "Logo-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  console.log('abhay2');
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+    console.log('ABHAY 3')
+  } else {
+    cb(null, false);
+    console.log('ABHAY 4')
+  }
+};
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
 
 
 

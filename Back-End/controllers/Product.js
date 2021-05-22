@@ -1,7 +1,8 @@
 const Product = require("../models/Product");
 
 exports.addProduct = (req,res,next) => {
-  console.log(req.body)
+  console.log('ABHAY')
+  console.log(req.body);
   console.log(req.file);
   const newProduct = new Product({
     name: req.body.name,

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import ConditinalRender from './ConditionalRender'; 
-import logoSrc from '../../assets/log.png';
+// import logoSrc from '../../assets/log.png';
+import logoSrc from '../../assets/ecomLogo.png';
 import './Navbar.css';
 import SearchBar from './SearchBar';
 
@@ -12,15 +13,11 @@ class Navbar extends Component {
   }
 
   componentDidMount(){
-    // this.setState({isLoggedIn : this.props.logStatus})
+    
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
     if(token !== null && role === null){
       this.setState({isLoggedIn : true});
-      // console.log(token);
-      // window.location.reload(true);
-      // console.log('token exists!');
-      // console.log(this.state);
     }
     else{
       // console.log("token doesn't exist!");

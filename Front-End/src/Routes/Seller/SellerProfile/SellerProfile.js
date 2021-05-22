@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink, Redirect } from "react-router-dom";
-import logoSrc from "../../../assets/log.png";
+// import logoSrc from "../../../assets/log.png";
+import logoSrc from "../../../assets/ecomLogo.png";
 import "./SellerProfile.css";
 import ServerService from "../../../API/ServerService";
 import loadSrc from "../../../assets/loader2.gif";
@@ -75,21 +76,39 @@ class SellerProfile extends Component {
 
   submitProduct = (details) => {
     let userId = localStorage.getItem("username");
-    const prodDetails = {
-      name: details.title,
-      price: Number(details.price),
-      stock: Number(details.stock),
-      seller: details.sellerBrand,
-      category: details.category,
-      subCategory: details.subcategory,
-      fit: details.fit,
-      material: details.material,
-      prodType: details.type,
-      sellerUsername: userId,
-      image: details.selectedFile
-    };
-    console.log(prodDetails);
 
+    let prodDetails = new FormData();
+    prodDetails.append("name", details.title);
+    prodDetails.append("price", Number(details.price));
+    prodDetails.append("stock", Number(details.stock));
+    prodDetails.append("seller", details.sellerBrand);
+    prodDetails.append("category", details.category);
+    prodDetails.append("subCategory", details.subcategory);
+    prodDetails.append("fit", details.fit);
+    prodDetails.append("material", details.material);
+    prodDetails.append("prodType", details.type);
+    prodDetails.append("sellerUsername", userId);
+    prodDetails.append("image", details.selectedFile);
+
+    // const prodDetails = {
+    //   name: details.title,
+    //   price: Number(details.price),
+    //   stock: Number(details.stock),
+    //   seller: details.sellerBrand,
+    //   category: details.category,
+    //   subCategory: details.subcategory,
+    //   fit: details.fit,
+    //   material: details.material,
+    //   prodType: details.type,
+    //   sellerUsername: userId,
+    //   image: details.selectedFile,
+    // };
+    // console.log(prodDetails);
+
+    console.log(prodDetails);
+    for (var pair of prodDetails.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
     ServerService.pushProduct(prodDetails)
       .then((res) => {
         console.log(res);
@@ -99,9 +118,9 @@ class SellerProfile extends Component {
           popupData: "Product uploaded successfully!",
           popupColor: "success",
         });
-        setTimeout(function () {
-          window.location.reload();
-        }, 1400);
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 1400);
       })
       .catch((err) => {
         // console.log(err);
@@ -110,9 +129,9 @@ class SellerProfile extends Component {
           popupData: "Something went wrong! Trying reducing image size",
           popupColor: "danger",
         });
-        setTimeout(function () {
-          window.location.reload();
-        }, 1400);
+        // setTimeout(function () {
+        //   window.location.reload();
+        // }, 1400);
       });
 
     // let fd = new FormData();
