@@ -39,15 +39,15 @@ const ProductSchema = new Schema({
     type: String,
     required: true
   },
-  // sellerId:{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   required: true
-  // },
-  // image: {
-  //   type: String,
-  //   required: true
-  // }
+  sellerId:{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  imageUrl: {
+    type: String,
+    required: true
+  }
 
 });
 

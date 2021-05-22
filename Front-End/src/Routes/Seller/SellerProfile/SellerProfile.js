@@ -90,25 +90,6 @@ class SellerProfile extends Component {
     prodDetails.append("sellerUsername", userId);
     prodDetails.append("image", details.selectedFile);
 
-    // const prodDetails = {
-    //   name: details.title,
-    //   price: Number(details.price),
-    //   stock: Number(details.stock),
-    //   seller: details.sellerBrand,
-    //   category: details.category,
-    //   subCategory: details.subcategory,
-    //   fit: details.fit,
-    //   material: details.material,
-    //   prodType: details.type,
-    //   sellerUsername: userId,
-    //   image: details.selectedFile,
-    // };
-    // console.log(prodDetails);
-
-    console.log(prodDetails);
-    for (var pair of prodDetails.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
     ServerService.pushProduct(prodDetails)
       .then((res) => {
         console.log(res);
@@ -133,23 +114,6 @@ class SellerProfile extends Component {
         //   window.location.reload();
         // }, 1400);
       });
-
-    // let fd = new FormData();
-    // fd.append("image", details.selectedFile);
-    // // console.log(details.title);
-    // // console.log(fd);
-    // // const imgDetail = {
-    // //   image : details.selectedFile,
-    // // }
-    // // console.log(imgDetail);
-    // axios
-    //   .post(`/image/${details.title}`, fd)
-    //   .then((res) => {
-    //     // console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     // console.log(err);
-    //   });
   };
 
   hidePopup = () => {

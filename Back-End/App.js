@@ -33,31 +33,27 @@ app.use((req, res, next) => {
 // MULTER CONFIGURATION
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log('________');
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    console.log('_!!!!!!!!!____');
-    cb(null, "Logo-" + file.originalname);
+    cb(null, new Date().toDateString() + '-' + file.originalname);
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  console.log('abhay2');
   if (
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg"
   ) {
     cb(null, true);
-    console.log('ABHAY 3')
   } else {
     cb(null, false);
-    console.log('ABHAY 4')
   }
 };
 
 
+// For static data
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
