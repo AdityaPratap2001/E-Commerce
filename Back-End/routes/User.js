@@ -9,5 +9,7 @@ router.post('/editUser',userController.editProfileDetails);
 
 router.post('/editPassword',userController.changePassword);
 
+router.get('/api/products/getSellerProduct/:email',userController.getUploadedProducts);
+
 
 module.exports = router;
