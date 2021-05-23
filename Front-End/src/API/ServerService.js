@@ -10,8 +10,8 @@ class ServerService{
     return axios.get('/api/products/featuredProducts')
   }
 
-  fetchPersonalizedProducts(gender){
-    return axios.get(`/api/products/personalisedProducts/${gender}`)
+  fetchPersonalizedProducts(userName){
+    return axios.get(`/api/products/personalisedProducts/${userName}`)
   }
 
   getProductByID(ID){

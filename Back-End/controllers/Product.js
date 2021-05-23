@@ -1,10 +1,11 @@
 const Product = require("../models/Product");
 const User = require("../models/User");
-// const { use } = require("../routes/Auth");
 
-exports.getFeaturedProducts = (req,res,next) => {
-  
-  console.log(req);
+
+
+
+exports.getFeaturedProducts = (req, res, next) => {
+
   let featuredProducts = [];
   Product.find()
     .then((productsList) => {
@@ -15,23 +16,70 @@ exports.getFeaturedProducts = (req,res,next) => {
           pic: product.imageUrl,
           seller: product.brand,
           name: product.name,
-          price: product.price
-        })
-      })
+          price: product.price,
+        });
+      });
 
-      console.log(featuredProducts);
-      res.status(200).json({
-        data: featuredProducts
-      })
+      // console.log(featuredProducts);
+      res.status(200).json([...featuredProducts]);
     })
     .catch((err) => {
       throw err;
-    })
+    });
+};
 
-}
+
+
+
+exports.getPersonalizedProducts = (req, res, next) => {
+  let email = req.params.email;
+  let personalizedProducts = [];
+  let gender = null;
+
+  User.findOne({ email: email })
+    .then((userData) => {
+      gender = userData.gender;
+    })
+    .then(() => {
+      Product.find().then((productList) => {
+        productList.map((product) => {
+          if (gender === "male" && product.category === "Men") {
+            personalizedProducts.push({
+              id: product._id,
+              pic: product.imageUrl,
+              seller: product.brand,
+              name: product.name,
+              price: product.price,
+            });
+          } 
+          else if (gender === "female" && product.category === "Women") {
+            personalizedProducts.push({
+              id: product._id,
+              pic: product.imageUrl,
+              seller: product.brand,
+              name: product.name,
+              price: product.price,
+            });
+          }
+        });
+        res.status(200).json([...personalizedProducts]);
+      });
+
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+
+
+
+
+
+
 
 exports.addProduct = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   let sellerID = null;
   User.findOne({ email: req.body.sellerUsername })
@@ -54,12 +102,6 @@ exports.addProduct = (req, res, next) => {
       newProduct
         .save()
         .then(() => {
-          // let newProd = {
-          //   productId: newProduct._id,
-          //   quantity: newProduct.stock,
-          // };
-
-          // let pushedProducts = [...userData.pushedProducts, newProd];
           let pushedProducts = [...userData.pushedProducts, newProduct];
 
           userData.pushedProducts = pushedProducts;
@@ -80,4 +122,3 @@ exports.addProduct = (req, res, next) => {
       throw error;
     });
 };
-

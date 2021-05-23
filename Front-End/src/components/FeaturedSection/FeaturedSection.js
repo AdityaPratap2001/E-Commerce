@@ -17,55 +17,24 @@ class FeaturedSection extends Component {
       ServerService.fetchFeaturedProducts()
         .then((res) => {
           console.log(res);
-          this.setState({ items: res.data.data });
+          this.setState({ items: res.data });
         })
         .catch((err) => {
           console.log(err);
         });
     } 
-    // else {
-    //   // FOR PERSONALIZED SECTION!
-    //   let userID = localStorage.getItem("username");
-    //   let role = localStorage.getItem("role");
-    //   if (userID !== null && role === "buyer") {
-    //     ServerService.fetchDetailsByUserID(userID)
-    //       .then((res) => {
-    //         // console.log(res);
-    //         this.setState({ gender: res.data.gender });
-    //         // console.log(this.state.gender);
-    //       })
-    //       .then(() => {
-    //         if (this.state.gender === "male") {
-    //           ServerService.fetchPersonalizedProducts("Men")
-    //             .then((res) => {
-    //               // console.log(res);
-    //               this.setState({ items: res.data });
-    //             })
-    //             .catch((err) => {
-    //               // console.log(err);
-    //             });
-    //         } else if (this.state.gender === "female") {
-    //           ServerService.fetchPersonalizedProducts("Women")
-    //             .then((res) => {
-    //               // console.log(res);
-    //               this.setState({ items: res.data });
-    //             })
-    //             .catch((err) => {
-    //               // console.log(err);
-    //             });
-    //         }
-    //       });
-    //   } else {
-    //     ServerService.fetchFeaturedProducts()
-    //       .then((res) => {
-    //         // console.log(res);
-    //         this.setState({ items: res.data });
-    //       })
-    //       .catch((err) => {
-    //         // console.log(err);
-    //       });
-    //   }
-    // }
+    else {
+      // FOR PERSONALIZED SECTION!
+      let userName = localStorage.getItem('username');
+      ServerService.fetchPersonalizedProducts(userName)
+        .then((res) => {
+          console.log(res);
+          this.setState({ items: res.data });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
   }
 
   render() {

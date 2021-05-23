@@ -15,7 +15,6 @@ exports.getUserDetails = (req, res, next) => {
         role: userData.userType,
       };
 
-      // console.log(UserData);
       res.status(200).json(UserData);
     })
     .catch((err) => {
