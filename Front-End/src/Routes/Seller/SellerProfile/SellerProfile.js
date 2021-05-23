@@ -25,7 +25,7 @@ class SellerProfile extends Component {
   componentDidMount() {
     let userId = localStorage.getItem("username");
     let role = localStorage.getItem("role");
-    if (role === null) {
+    if (role === null || role !== 'seller') {
       this.setState({ redirect: "/" });
     }
 

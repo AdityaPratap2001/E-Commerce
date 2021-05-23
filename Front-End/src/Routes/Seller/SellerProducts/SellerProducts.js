@@ -13,7 +13,7 @@ class SellerProducts extends Component {
 
   componentDidMount() {
     let userID = localStorage.getItem("username");
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    
     ServerService.searchBySellerID(userID)
       .then((res) => {
         this.setState({ loading: false });

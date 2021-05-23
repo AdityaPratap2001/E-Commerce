@@ -56,6 +56,7 @@ class Login extends Component {
                   }
                   else{
                     this.setState({loading : false});
+                    localStorage.setItem('role','buyer');
                     this.setState({redirect : '/'});
                   }
                 })

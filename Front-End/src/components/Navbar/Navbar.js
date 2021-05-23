@@ -16,7 +16,7 @@ class Navbar extends Component {
     
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-    if(token !== null && role === null){
+    if(token !== null && role === 'buyer'){
       this.setState({isLoggedIn : true});
     }
     else{

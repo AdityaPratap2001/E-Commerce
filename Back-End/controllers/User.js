@@ -88,16 +88,17 @@ exports.getUploadedProducts = (req, res, next) => {
               fit: productData.fit,
             };
             uploadedProducts.push(prodObj);
-
+            console.log(uploadedProducts);
           })
           .catch((err) => {
             throw err;
           });
-          
+          console.log(uploadedProducts);
       });
-      console.log(uploadedProducts);
+      // console.log(uploadedProducts);
     })
     .then(() => {
+      // console.log(uploadedProducts);
       res.status(200).json = uploadedProducts;
     })
     .catch((err) => {
