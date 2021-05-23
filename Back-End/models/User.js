@@ -49,13 +49,13 @@ const UserSchema = new Schema({
     },
   ],
   pushedProducts: [
-    {
-      productId: {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-      },
-      quantity: { type: Number, required: true }
-    },
+    // {
+      // product: {
+        // type: Object,
+        // ref: "Product",
+      // },
+      // quantity: { type: Number, required: true }
+    // },
   ],
 });
 

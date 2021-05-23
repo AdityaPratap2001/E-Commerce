@@ -1,6 +1,34 @@
 const Product = require("../models/Product");
 const User = require("../models/User");
-const { use } = require("../routes/Auth");
+// const { use } = require("../routes/Auth");
+
+exports.getFeaturedProducts = (req,res,next) => {
+  
+  console.log(req);
+  let featuredProducts = [];
+  Product.find()
+    .then((productsList) => {
+      // console.log(productsList);
+      productsList.map((product) => {
+        featuredProducts.push({
+          id: product._id,
+          pic: product.imageUrl,
+          seller: product.brand,
+          name: product.name,
+          price: product.price
+        })
+      })
+
+      console.log(featuredProducts);
+      res.status(200).json({
+        data: featuredProducts
+      })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
 
 exports.addProduct = (req, res, next) => {
   console.log(req.body);
@@ -26,12 +54,14 @@ exports.addProduct = (req, res, next) => {
       newProduct
         .save()
         .then(() => {
-          let newProd = {
-            productId: newProduct._id,
-            quantity: newProduct.stock,
-          };
+          // let newProd = {
+          //   productId: newProduct._id,
+          //   quantity: newProduct.stock,
+          // };
 
-          let pushedProducts = [...userData.pushedProducts, newProd];
+          // let pushedProducts = [...userData.pushedProducts, newProd];
+          let pushedProducts = [...userData.pushedProducts, newProduct];
+
           userData.pushedProducts = pushedProducts;
           userData.save().then(() => {
             return res.status(200).send("Product uploaded successfully!");
@@ -50,3 +80,4 @@ exports.addProduct = (req, res, next) => {
       throw error;
     });
 };
+

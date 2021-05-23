@@ -19,14 +19,10 @@ class Home extends Component {
 
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-    if(token !== null && role===null){
+    if(token !== null && role === 'buyer'){
       this.setState({isLoggedIn : true});
-      // console.log('token exists!');
-      // console.log(this.state);
     }
-    else{
-      // console.log("token doesn't exist!");
-    }
+    
   }
 
   render() {

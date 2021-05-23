@@ -26,7 +26,6 @@ exports.getUserDetails = (req, res, next) => {
 };
 
 exports.editProfileDetails = (req, res, next) => {
-  // console.log(req.body);
   let email = req.body.username;
   User.findOne({ email: email })
     .then((userData) => {
@@ -58,50 +57,36 @@ exports.changePassword = (req, res, next) => {
     });
 };
 
+
 exports.getUploadedProducts = (req, res, next) => {
   let email = req.params.email;
-  let uploadedProducts = [];
-
+  let pushedArray = [];
   User.findOne({ email: email })
     .then((userData) => {
-      
-      userData.pushedProducts.map((product) => {
-        let productID = product.productId;
-        let stock = product.quantity;
-
-        console.log(productID);
-
-        Product.findOne({ _id: productID })
-          .then((productData) => {
-            // console.log(productData);
-
-            let prodObj = {
-              id: productData._id,
-              seller: email,
-              name: productData.name,
-              prodType: productData.productType,
-              price: productData.price,
-              material: productData.material,
-              category: productData.category,
-              subCategory: productData.subCategory,
-              stock: productData.stock,
-              fit: productData.fit,
-            };
-            uploadedProducts.push(prodObj);
-            console.log(uploadedProducts);
-          })
-          .catch((err) => {
-            throw err;
-          });
-          console.log(uploadedProducts);
+      userData.pushedProducts.map((productData) => {
+        let prodObj = {
+            id: productData._id,
+            seller: email,
+            name: productData.name,
+            prodType: productData.productType,
+            price: productData.price,
+            material: productData.material,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            stock: productData.stock,
+            fit: productData.fit,
+        };
+        pushedArray.push(prodObj);
       });
-      // console.log(uploadedProducts);
+      // console.log(pushedArray);
     })
     .then(() => {
-      // console.log(uploadedProducts);
-      res.status(200).json = uploadedProducts;
+      // console.log(pushedArray);
+      res.status(200).json(
+        [...pushedArray]
+      )
     })
     .catch((err) => {
-      console.log(err);
+      throw err;
     });
 };

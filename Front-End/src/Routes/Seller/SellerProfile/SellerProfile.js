@@ -99,20 +99,19 @@ class SellerProfile extends Component {
           popupData: "Product uploaded successfully!",
           popupColor: "success",
         });
-        // setTimeout(function () {
-        //   window.location.reload();
-        // }, 1400);
+        setTimeout(function () {
+          window.location.reload();
+        }, 1400);
       })
       .catch((err) => {
-        // console.log(err);
         this.setState({
           showPopup: true,
           popupData: "Something went wrong! Trying reducing image size",
           popupColor: "danger",
         });
-        // setTimeout(function () {
-        //   window.location.reload();
-        // }, 1400);
+        setTimeout(function () {
+          window.location.reload();
+        }, 1400);
       });
   };
 
@@ -192,7 +191,6 @@ class SellerProfile extends Component {
             <div className="card">
               <div className="card-header" id="headingOne">
                 <h2 className="mb-0">
-                  {/* <h5>Sell your product</h5> */}
                   <button
                     className="btn btn-link"
                     type="button"
