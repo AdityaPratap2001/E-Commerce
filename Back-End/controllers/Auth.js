@@ -78,7 +78,6 @@ exports.postUserLogin = (req, res, next) => {
 
   User.findOne({ email: email })
     .then((userDoc) => {
-      console.log(userDoc.password);
 
       const token = jwt.sign({ email: email },config.TOKEN_KEY,{
         algorithm: "HS256",

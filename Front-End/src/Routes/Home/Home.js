@@ -44,7 +44,9 @@ class Home extends Component {
             subHead2='These products are worth adding to your cart!'
           />
           <FeaturedSection
-            personalized={true}
+            personalized={
+              this.state.isLoggedIn ? true : false
+            }
             sectionTitle={tagLine} 
             subHead1="We've picked some items for you"
             subHead2='These products are worth adding to your cart!'
