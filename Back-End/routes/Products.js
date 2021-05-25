@@ -10,5 +10,6 @@ router.get('/api/products/featuredProducts',productController.getFeaturedProduct
 
 router.get('/api/products/personalisedProducts/:email',productController.getPersonalizedProducts);
 
+router.get('/api/products/productId/:productId/:email',productController.getProductById);
 
 module.exports = router;

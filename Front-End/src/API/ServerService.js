@@ -14,8 +14,8 @@ class ServerService{
     return axios.get(`/api/products/personalisedProducts/${userName}`)
   }
 
-  getProductByID(ID){
-    return axios.get(`/api/products/productId/${ID}`)
+  getProductByID(ID,userName){
+    return axios.get(`/api/products/productId/${ID}/${userName}`)
   }
 
   doesProductExistInWishlist(data){

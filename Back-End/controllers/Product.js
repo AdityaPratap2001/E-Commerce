@@ -77,6 +77,60 @@ exports.getPersonalizedProducts = (req, res, next) => {
 
 
 
+exports.getProductById = (req,res,next) => {
+
+  const productId = req.params.productId;
+  const email = req.params.email;
+
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      // console.log(productData);
+      User.findOne({ email: email })
+        .then((userData) => {
+          
+          let inWishlist = false;
+          let inCart = false;
+          userData.wishlist.map((product) => {
+            if(product._id === productId){
+              inWishlist = true;
+            }
+          })
+          userData.cart.map((product) => {
+            if(product._id === productId){
+              inCart = true;
+            }
+          })
+          res.status(200).json({
+            seller: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            prodType: productData.productType,
+            fit: productData.fit,
+            material: productData.material,
+            picture: productData.imageUrl,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            isWishlisted: inWishlist,
+            isInCart: inCart,
+          })
+          
+        })
+        .catch((err) => {
+          throw err;
+        })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
+
+
+
+
+
+
+
 
 exports.addProduct = (req, res, next) => {
   // console.log(req.body);

@@ -23,49 +23,29 @@ class ProductDetails extends Component {
 
   componentDidMount(){
     
-    ServerService.getProductByID(this.state.productId)
-      .then(response => {
-        // console.log(response.data[0]);
-        this.setState({productDetails : response.data[0]});
-      })
-      .catch(error =>{
-        // console.log(error)
-      })
-
     let userId = localStorage.getItem('username');
-    let productData = {
-      username : userId,
-      productId : this.state.productId
-    }
-    // console.log(productData);
-    
 
-    ServerService.doesProductExistInWishlist(productData)
-      .then(res => {
-        // console.log(res.data);
-        if(res.data){
-          this.setState({wishlisted : true});
-        }
+    //TO FETCH PRODUCT DETAILS
+    ServerService.getProductByID(this.state.productId,userId)
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          productDetails : res.data,
+          wishlisted: res.data.isWishlisted,
+          addedToCart: res.data.isInCart
+        });
       })
-      .catch(err => {
-        // console.log('error');
-      })
-
-
-    ServerService.doesProductExistInCart(productData)
-      .then(res => {
-        if(res.data){
-          this.setState({addedToCart : true});
-        }
+      .catch((err) =>{
+        console.log(err)
       })
 
   }
 
   addToWishlist = () => {
-    // console.log('Wishlisted!');
+    
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-    if(token === null || role !== null){
+    if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
     else{
@@ -75,7 +55,6 @@ class ProductDetails extends Component {
         username : userId,
         productId : this.state.productId
       }
-      // console.log(productData);
       
       ServerService.addToWishlist(productData)
         .then(response => {
@@ -88,10 +67,10 @@ class ProductDetails extends Component {
     }
   }
   addToCart = () => {
-    // console.log('Add to cart!');
+
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-    if(token === null || role !== null){
+    if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
     else{
@@ -102,7 +81,6 @@ class ProductDetails extends Component {
         productId : this.state.productId,
         productAmt : this.state.quantity
       }
-      // console.log(productData);
       
       ServerService.addToCart(productData)
         .then(response => {
@@ -117,9 +95,9 @@ class ProductDetails extends Component {
   }
 
   removeItemFromWishlist = () => {
-    // console.log('will remove from wishlist!');
+
     let token = localStorage.getItem('token');
-    if(token === null){
+    if(token === null ){
       this.setState({redirect : '/userLogin'})
     }
     else{
@@ -298,12 +276,12 @@ class ProductDetails extends Component {
             <NavLink to='/' className='breadLink'>
               Home
             </NavLink> 
-            >
+            {`>`}
             <NavLink to={direct} className='breadLink'>
               {/* {this.state.productDetails.category} */}
               {mainLink}
             </NavLink> 
-            >
+            {`>`}
             <NavLink to={subDirect} className='breadLink'>
               {/* {this.state.productDetails.subCategory} */}
               {subLink}
@@ -314,11 +292,7 @@ class ProductDetails extends Component {
           <div className='productDetailsLeft'> 
             
             <div className='imgCont'>
-              {/* <img className='img-fluid' src={producdImgSrc} alt='product_Img'/> */}
-              {/* <img className='img-fluid' src={this.state.productDetails.picByte.data} alt='product_Img'/> */}
-              {/* <img src={URL.createObjectURL(this.state.productDetails.picByte)} /> */}
-              {/* <img src={`data:image/jpeg;base64,${this.state.productDetails.picByte}`} /> */}
-              <img alt='productImg' src={`data:image/png[jpg];base64,${this.state.productDetails.picByte}`}/>
+              <img alt='productImg' src={`http://localhost:8080/${this.state.productDetails.picture}`}/>
               {wishIcon}
             </div>
           </div>
@@ -347,8 +321,6 @@ class ProductDetails extends Component {
         
             
             <div className='productsButton'>
-              {/* <button type="button" onClick={this.addToWishlist} class="btn btn-outline-danger">Wishlist</button> */}
-              {/* <button type="button" onClick={this.addToCart} class="btn btn-outline-danger">Add to Cart</button> */}
               {wishlistButton}
               {cartButton}
             </div>
