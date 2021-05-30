@@ -91,7 +91,7 @@ exports.getProductById = (req,res,next) => {
           let inWishlist = false;
           let inCart = false;
           userData.wishlist.map((product) => {
-            if(product._id === productId){
+            if(product._id == productId){
               inWishlist = true;
             }
           })
@@ -183,10 +183,6 @@ exports.addToWishlist = (req,res,next) => {
 
   let userEmail = req.body.username;
   let productId = req.body.productId;
-
-  // console.log('___ADD_TO_WISHLIST___');
-  // console.log(userEmail);
-  // console.log(productId);
 
   let selectedProduct = {};
 
