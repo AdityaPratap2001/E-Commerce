@@ -211,11 +211,47 @@ exports.addToWishlist = (req,res,next) => {
     .catch((err) => {
       throw err;
     })
-
-
 }
 
 
+exports.removeFromWishlist = (req,res,next) => {
+
+  let userEmail = req.body.username;
+  let productId = req.body.productId;
+
+  let selectedProduct = {};
+
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      selectedProduct = productData;
+      return selectedProduct
+    })
+    .then((selectedProduct) => {
+
+      User.findOne({ email: userEmail })
+        .then((userData) => {
+
+          let wishlistedList = [];
+          userData.wishlist.map((wishlistProduct) => {
+            if(wishlistProduct._id != productId){
+              wishlistedList.push(wishlistProduct);
+            }
+          })
+          userData.wishlist = wishlistedList;
+          userData.save();
+
+          res.status(200).send("Product removed from wishlist");
+        })
+        .catch((err) => {
+          throw err;
+        })
+
+    })
+    .catch((err) => {
+      throw err
+    })
+
+}
 
 
 

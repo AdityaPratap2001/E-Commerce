@@ -13,5 +13,6 @@ router.get('/api/products/personalisedProducts/:email',productController.getPers
 router.get('/api/products/productId/:productId/:email',productController.getProductById);
 
 router.post('/addToWishlist',productController.addToWishlist);
+router.post('/removeFromWishlist',productController.removeFromWishlist);
 
 module.exports = router;
