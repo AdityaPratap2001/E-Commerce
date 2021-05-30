@@ -176,3 +176,54 @@ exports.addProduct = (req, res, next) => {
       throw error;
     });
 };
+
+
+
+exports.addToWishlist = (req,res,next) => {
+
+  let userEmail = req.body.username;
+  let productId = req.body.productId;
+
+  // console.log('___ADD_TO_WISHLIST___');
+  // console.log(userEmail);
+  // console.log(productId);
+
+  let selectedProduct = {};
+
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      selectedProduct = productData;
+      return selectedProduct
+    })
+    .then((selectedProduct) => {
+      // console.log(selectedProduct);
+      User.findOne({ email: userEmail })
+        .then((userData) => {
+
+          let wishlistedList = [...userData.wishlist];
+          wishlistedList.push(selectedProduct);
+
+          userData.wishlist = wishlistedList;
+          userData.save();
+
+          res.status(200).send("Product added to wishlist");
+        })
+        .catch((err) => {
+          throw err;
+        })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+
+}
+
+
+
+
+
+
+
+
+

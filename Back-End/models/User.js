@@ -40,23 +40,8 @@ const UserSchema = new Schema({
       quantity: { type: Number, required: true }
     },
   ],
-  wishlist: [
-    {
-      productId: {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    },
-  ],
-  pushedProducts: [
-    // {
-      // product: {
-        // type: Object,
-        // ref: "Product",
-      // },
-      // quantity: { type: Number, required: true }
-    // },
-  ],
+  wishlist: [],
+  pushedProducts: [],
 });
 
 module.exports = mongoose.model("User", UserSchema);
