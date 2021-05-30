@@ -12,7 +12,12 @@ router.get('/api/products/personalisedProducts/:email',productController.getPers
 
 router.get('/api/products/productId/:productId/:email',productController.getProductById);
 
+// WISHLIST
 router.post('/addToWishlist',productController.addToWishlist);
 router.post('/removeFromWishlist',productController.removeFromWishlist);
+
+// CART
+router.post('/addToCart',productController.addToCart);
+
 
 module.exports = router;

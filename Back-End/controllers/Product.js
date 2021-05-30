@@ -84,7 +84,7 @@ exports.getProductById = (req,res,next) => {
 
   Product.findOne({ _id: productId })
     .then((productData) => {
-      // console.log(productData);
+      
       User.findOne({ email: email })
         .then((userData) => {
           
@@ -96,7 +96,7 @@ exports.getProductById = (req,res,next) => {
             }
           })
           userData.cart.map((product) => {
-            if(product._id === productId){
+            if(product.product._id == productId){
               inCart = true;
             }
           })
@@ -133,7 +133,6 @@ exports.getProductById = (req,res,next) => {
 
 
 exports.addProduct = (req, res, next) => {
-  // console.log(req.body);
 
   let sellerID = null;
   User.findOne({ email: req.body.sellerUsername })
@@ -179,6 +178,7 @@ exports.addProduct = (req, res, next) => {
 
 
 
+// WISHLIST CONTROLLER
 exports.addToWishlist = (req,res,next) => {
 
   let userEmail = req.body.username;
@@ -192,7 +192,6 @@ exports.addToWishlist = (req,res,next) => {
       return selectedProduct
     })
     .then((selectedProduct) => {
-      // console.log(selectedProduct);
       User.findOne({ email: userEmail })
         .then((userData) => {
 
@@ -227,7 +226,6 @@ exports.removeFromWishlist = (req,res,next) => {
       return selectedProduct
     })
     .then((selectedProduct) => {
-
       User.findOne({ email: userEmail })
         .then((userData) => {
 
@@ -256,6 +254,59 @@ exports.removeFromWishlist = (req,res,next) => {
 
 
 
+// CART CONTROLLER
+exports.addToCart = (req,res,send) => {
+  
+  let userEmail = req.body.username;
+  let productId = req.body.productId;
+  let productQuantity = req.body.productAmt;
 
+  let selectedProduct = {};
+  
+  Product.findOne({ _id: productId })
+    .then((productData) => {
 
+      console.log(productData);
+      if(productData.stock < productQuantity){
+        const error = new Error("");
+        error.statusCode = 422;
+        error.data = {
+          msg: "Items out of stock, trying adding less quantity!",
+        };
+        throw error;
+      }
+
+      selectedProduct = productData;
+      return selectedProduct;
+    })
+    .then((selectedProduct) => {
+
+      console.log('*****************');
+      console.log(selectedProduct);
+      console.log('*****************');
+
+      User.findOne({ email: userEmail })
+        .then((userData) => {
+
+          let newCart = [...userData.cart];
+          newCart.push({
+            product: selectedProduct,
+            quantity: Number(productQuantity)
+          })
+
+          userData.cart = newCart;
+          userData.save();
+
+          res.status(200).send("Product added to cart");
+        })
+        .catch((err) => {
+          throw err;
+        })
+
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
 
