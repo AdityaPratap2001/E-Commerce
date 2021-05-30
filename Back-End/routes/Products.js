@@ -18,6 +18,7 @@ router.post('/removeFromWishlist',productController.removeFromWishlist);
 
 // CART
 router.post('/addToCart',productController.addToCart);
+router.post('/removeFromCart',productController.removeFromCart);
 
 
 module.exports = router;

@@ -45,6 +45,7 @@ class ProductDetails extends Component {
     
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
+    
     if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
@@ -66,10 +67,12 @@ class ProductDetails extends Component {
         })
     }
   }
+
   addToCart = () => {
 
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
+    
     if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
@@ -97,7 +100,9 @@ class ProductDetails extends Component {
   removeItemFromWishlist = () => {
 
     let token = localStorage.getItem('token');
-    if(token === null ){
+    let role = localStorage.getItem('role');
+    
+    if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
     else{
@@ -107,7 +112,6 @@ class ProductDetails extends Component {
         username : userId,
         productId : this.state.productId
       }
-      // console.log(productData);
 
       ServerService.removeFromWishlist(productData)
         .then(response => {
@@ -121,9 +125,11 @@ class ProductDetails extends Component {
   }
 
   removeFromCart = () => {
-    // console.log('will delete item from cart!');
+
     let token = localStorage.getItem('token');
-    if(token === null){
+    let role = localStorage.getItem('role');
+    
+    if(token === null || role !== 'buyer'){
       this.setState({redirect : '/userLogin'})
     }
     else{
@@ -132,9 +138,7 @@ class ProductDetails extends Component {
       let productData = {
         username : userId,
         productId : this.state.productId,
-        productAmt : this.state.quantity
       }
-      // console.log(productData);
       
       ServerService.removeFromCart(productData)
         .then(response => {

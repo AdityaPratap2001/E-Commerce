@@ -281,10 +281,6 @@ exports.addToCart = (req,res,send) => {
     })
     .then((selectedProduct) => {
 
-      console.log('*****************');
-      console.log(selectedProduct);
-      console.log('*****************');
-
       User.findOne({ email: userEmail })
         .then((userData) => {
 
@@ -310,3 +306,41 @@ exports.addToCart = (req,res,send) => {
 
 }
 
+
+exports.removeFromCart = (req,res,next) => {
+
+  let userEmail = req.body.username;
+  let productId = req.body.productId;
+
+  let selectedProduct = {};
+
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      return productData;
+    })
+    .then((productData)=>{
+
+      User.findOne({ email: userEmail })
+        .then((userData) => {
+
+          let newCart = [];
+          userData.cart.map((cartItem) => {
+            if(cartItem.product._id != productId){
+              newCart.push(cartItem);
+            }
+          })
+
+          userData.cart = newCart;
+          userData.save();
+
+          res.status(200).send("Product removed from cart!");
+        })
+        .catch((err) => {
+          throw err;
+        })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
