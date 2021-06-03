@@ -218,14 +218,12 @@ exports.removeFromWishlist = (req,res,next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
-  let selectedProduct = {};
 
   Product.findOne({ _id: productId })
     .then((productData) => {
-      selectedProduct = productData;
-      return selectedProduct
+      return productData
     })
-    .then((selectedProduct) => {
+    .then((productData) => {
       User.findOne({ email: userEmail })
         .then((userData) => {
 
@@ -334,6 +332,46 @@ exports.removeFromCart = (req,res,next) => {
           userData.save();
 
           res.status(200).send("Product removed from cart!");
+        })
+        .catch((err) => {
+          throw err;
+        })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
+
+
+exports.moveFromCartToWishlist = (req,res,next) => {
+
+  let userEmail = req.body.username;
+  let productId = req.body.productId;
+
+  User.findOne({ email: userEmail })
+    .then((userData) => {
+
+      Product.findOne({ _id: productId })
+        .then((productData) => {
+          let newWislist = [...userData.wishlist];
+          newWislist.push(productData);
+
+          userData.wishlist = newWislist;
+          userData.save();
+        })
+        .then(() => {
+          let newCartList = [];
+          userData.cart.push((cartProduct) => {
+            if(cartProduct.product._id != productId){
+              newCartList.push(cartProduct);
+            }
+          })
+
+          userData.cart = newCartList;
+          userData.save();
+
+          res.status(200).send('Product successfullly moved to wishlist!')
         })
         .catch((err) => {
           throw err;

@@ -12,5 +12,6 @@ router.post('/editPassword',userController.changePassword);
 router.get('/api/products/getSellerProduct/:email',userController.getUploadedProducts);
 
 router.get('/myWishlist/:email',userController.fetchWishlist);
+router.get('/myCart/:email',userController.fetchCart);
 
 module.exports = router;

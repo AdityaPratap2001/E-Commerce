@@ -113,3 +113,47 @@ exports.fetchWishlist = (req,res,send) => {
     })
 
 }
+
+
+//FOR FETCHING BUYER'S CART
+exports.fetchCart = (req,res,send) => {
+
+  let email = req.params.email;
+  let cartProductsList = [];
+  let cartValue = 0;
+
+  User.findOne({ email: email })
+    .then((userData) => {
+
+      userData.cart.map((cartProduct) => {
+
+        let isInMyWishlist = false;
+        userData.wishlist.map((wishlistProduct) => {
+          // console.log(`${cartProduct.product._id} --- ${wishlistProduct._id}`)
+          if(wishlistProduct._id == cartProduct.product._id){
+            isInMyWishlist = true;
+          }
+        })
+
+        let cartObj = {
+          product: cartProduct.product,
+          quantity: cartProduct.quantity,
+          isInMyWishlist: isInMyWishlist,
+        }
+
+        // console.log(cartObj);
+        cartProductsList.push(cartObj);
+        cartValue += cartProduct.product.price;
+      })
+
+      res.status(200).json({
+        list: [...cartProductsList],
+        cartValue: cartValue,
+      });
+
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
