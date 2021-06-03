@@ -57,6 +57,7 @@ exports.changePassword = (req, res, next) => {
 };
 
 
+// FOR SELLER
 exports.getUploadedProducts = (req, res, next) => {
   let email = req.params.email;
   let pushedArray = [];
@@ -89,3 +90,26 @@ exports.getUploadedProducts = (req, res, next) => {
       throw err;
     });
 };
+
+
+//FOR FETCHING BUYER'S WISHLIST
+exports.fetchWishlist = (req,res,send) => {
+
+  let email = req.params.email;
+  let wishlistedProducts = [];
+
+  User.findOne({ email: email })
+    .then((userData) => {
+
+      userData.wishlist.map((product) => {
+        wishlistedProducts.push(product);
+      })
+
+      res.status(200).json([...wishlistedProducts]);
+
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}

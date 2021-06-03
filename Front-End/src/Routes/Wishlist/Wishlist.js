@@ -19,8 +19,9 @@ class Wishlist extends Component {
   componentDidMount(){
 
     let userId = localStorage.getItem('username');
+    let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-    if(role !== null){
+    if(token === null || role !== "buyer"){
       this.setState({redirect : '/'});
     }
     
@@ -35,46 +36,31 @@ class Wishlist extends Component {
     
     ServerService.fetchWishlistDetailsByID(userId)
       .then(res => {
-        // console.log(res);
+        console.log(res);
         if(res.data.length === 0){
           this.setState({isEmpty : true})
         }
         else{
           this.setState({list : res.data});
-          // console.log(this.state.list);
         }
       })
       .catch(err => {
         // console.log(err);
       })
 
-    if(userId === null){
-      this.setState({redirect : '/'});
-    }
   }
 
-  removeWishItem = (id) => { 
-    if(this.state.list){
-      // alert('entered!' + id);
-      let oldItems = this.state.list;
-      // console.log(oldItems);
-      // let newItems = [];
-      // for(let i=0 ; i<oldItems.length ; i++){
-      //   if(i !== id){
-      //     newItems.push(oldItems[i]);
-      //   }
-      // }
-      oldItems.splice(id,1);
-      if(oldItems.length === 0){
-        this.setState({isEmpty : true});
+  removeWishlistItem = (idx) => { 
+
+    let newWishlist = [];
+    this.state.list.map((product,index) => {
+      if(index !== idx){
+        newWishlist.push(product);
       }
-      // console.log(oldItems);
-      this.setState({list : oldItems});
-    }
-    else{
-      alert('jkdcbdhjcbj');
-    }
-    // console.log(this.state.list);
+    })
+
+    this.setState({ list: newWishlist });
+    
   }
 
   logOut = (e) => {
@@ -97,9 +83,8 @@ class Wishlist extends Component {
       data = (
         <div className='wishlistDisplay'>
           {
-            this.state.list.map((id,index) => {
-              // console.log('In Map : '+ id +' '+index);
-              return <WishlistItem key={index} index={index} remove={this.removeWishItem} id={id}/>
+            this.state.list.map((product,index) => {
+              return <WishlistItem key={index} product={product} index={index} removeItem={this.removeWishlistItem}/>
             })
           }
         </div>
