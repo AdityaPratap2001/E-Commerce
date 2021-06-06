@@ -1,7 +1,6 @@
 const Product = require("../models/Product");
 const User = require("../models/User");
-
-
+const crypto = require("crypto");
 
 
 exports.getFeaturedProducts = (req, res, next) => {
@@ -264,7 +263,7 @@ exports.addToCart = (req,res,send) => {
   Product.findOne({ _id: productId })
     .then((productData) => {
 
-      console.log(productData);
+      // console.log(productData);
       if(productData.stock < productQuantity){
         const error = new Error("");
         error.statusCode = 422;
@@ -376,6 +375,65 @@ exports.moveFromCartToWishlist = (req,res,next) => {
         .catch((err) => {
           throw err;
         })
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
+
+
+// PLACING ORDER
+exports.placeOrder = (req,res,next) => {
+
+  let userEmail = req.body.email;
+
+  User.findOne({ email: userEmail })
+    .then((userData) => {
+
+      let orderValue = 50;
+      let orderDate = new Date(); 
+      let orderList = [];
+      
+      userData.cart.map((cartItem) => {
+        orderList.push(cartItem);
+        orderValue += (cartItem.product.price * cartItem.quantity);
+      })
+       
+      let newOrder = {
+        orderValue: orderValue,
+        orderDate: orderDate,
+        productList: orderList,
+        orderId: crypto.randomBytes(12).toString("hex"),
+      }
+
+      let newOrderList = [...userData.orders];
+      newOrderList.push(newOrder);
+
+      userData.orders = newOrderList;
+      userData.cart = [];
+      console.log(newOrderList);
+      userData.save();
+
+      res.status(200).send('Order placed successfully!');
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
+
+
+// GET PAST-ORDERS
+exports.getPastOrders = (req,res,send) => {
+
+  let userEmail = req.params.email;
+
+  User.findOne({ email: userEmail })
+    .then((userData) => {
+
+      res.status(200).send(userData.orders);
+
     })
     .catch((err) => {
       throw err;

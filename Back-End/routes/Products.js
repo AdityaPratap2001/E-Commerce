@@ -20,6 +20,7 @@ router.post('/removeFromWishlist',productController.removeFromWishlist);
 router.post('/addToCart',productController.addToCart);
 router.post('/removeFromCart',productController.removeFromCart);
 router.post('/cartToWishlist',productController.moveFromCartToWishlist);
-
+router.post('/placeOrder',productController.placeOrder);
+router.get('/orderHistory/:email',productController.getPastOrders);
 
 module.exports = router;

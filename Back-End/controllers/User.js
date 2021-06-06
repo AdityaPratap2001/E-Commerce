@@ -143,7 +143,7 @@ exports.fetchCart = (req,res,send) => {
 
         // console.log(cartObj);
         cartProductsList.push(cartObj);
-        cartValue += cartProduct.product.price;
+        cartValue += (cartProduct.product.price * cartProduct.quantity);
       })
 
       res.status(200).json({

@@ -21,7 +21,7 @@ class ChangePassword extends React.Component {
     event.preventDefault();
   
     if(this.validate()){
-        // console.log(this.state.input);
+      
         this.props.submitHandler(this.state.input);
   
         let input = {};
@@ -29,8 +29,6 @@ class ChangePassword extends React.Component {
         input["password"] = "";
         input["confirm_password"] = "";
         this.setState({input:input});
-  
-        // alert('Demo Form is submited');
     }
   }
   

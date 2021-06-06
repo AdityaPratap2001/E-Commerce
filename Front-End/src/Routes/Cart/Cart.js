@@ -62,7 +62,7 @@ class Cart extends Component {
     this.setState({ loading: true });
     ServerService.placeOrder(userId)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         if (res.status === 200) {
           this.setState({ loading: false });
           this.setState({ transactionComplete: true });

@@ -22,8 +22,10 @@ class User extends Component {
 
   componentDidMount(){
     let userId = localStorage.getItem('username');
+    let token = localStorage.getItem("token");
     let role = localStorage.getItem('role');
-    if(role !== null){
+
+    if(token === null || role !== "buyer"){
       this.setState({redirect : '/'});
     }
 
@@ -36,14 +38,11 @@ class User extends Component {
       .catch(err => {
         // console.log(err);
       })
-    
-    if(userId === null){
-      this.setState({redirect : '/'});
-    }
+
   }
 
   submit = (newPass) => {
-    // alert('ksdlnkd');
+
     let userId = localStorage.getItem('username');
     let newPassDetails = {
       username : userId,
@@ -51,11 +50,9 @@ class User extends Component {
       newPassword : newPass.password,
       newConfirmPassword : newPass.confirm_password
     }
-    // console.log(newPassDetails);
 
     ServerService.changePassword(newPassDetails)
       .then(res => {
-        // console.log(res);
         if(res.status === 200){
           this.setState({showPopup : true,popupData : 'Password changed successfully!',popupColor : 'success'});
         }
@@ -94,10 +91,8 @@ class User extends Component {
     let data2 = data;
 
     if(this.state.details){
-      let wishItems = this.state.details.wishlist.split(';');
-      let wishNum = wishItems.length - 1;
-      let cartItems = this.state.details.cart.split(';');
-      let cartNum = cartItems.length - 1;
+      let wishNum = this.state.details.wishElem;
+      let cartNum = this.state.details.cartElem;
 
       data = (
         <ProfileDetails detail={this.state.details} showExtra={true} wishElem={wishNum} cartElem={cartNum}/>

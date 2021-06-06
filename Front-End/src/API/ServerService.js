@@ -83,7 +83,7 @@ class ServerService{
   }
 
   placeOrder(ID){
-    return axios.get(`/orderPlaced/${ID}`)
+    return axios.post(`/placeOrder`,{ email: ID })
   }
 
   login(data){
