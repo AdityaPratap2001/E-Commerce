@@ -12,6 +12,8 @@ router.get('/api/products/personalisedProducts/:email',productController.getPers
 
 router.get('/api/products/productId/:productId/:email',productController.getProductById);
 
+router.get('/api/products/productCategory/:mainCategory',productController.getCategoryProduct);
+
 // WISHLIST
 router.post('/addToWishlist',productController.addToWishlist);
 router.post('/removeFromWishlist',productController.removeFromWishlist);

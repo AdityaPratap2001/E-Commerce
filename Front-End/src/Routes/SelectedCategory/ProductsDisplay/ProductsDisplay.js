@@ -6,7 +6,12 @@ class ProductsDisplay extends Component {
   render() {
 
     let display = this.props.products.map((item,index) => {
-      return <ProductBlock key={index} item={item}/>
+      let product = { ...item };
+      product.id = item._id;
+      product.pic = item.imageUrl;
+      return (
+       <ProductBlock key={index} item={product}/>
+      )
     }) 
 
     return (

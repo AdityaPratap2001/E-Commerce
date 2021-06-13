@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const multer = require("multer");
 const config = require('./config/config');
 const cors = require('cors');
+const crypto = require("crypto");
 const path = require('path');
 const app = express();
 
@@ -36,7 +37,7 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toDateString() + '-' + file.originalname);
+    cb(null, crypto.randomBytes(12).toString("hex") + '-' + file.originalname);
   },
 });
 

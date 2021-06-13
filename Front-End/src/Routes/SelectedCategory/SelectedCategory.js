@@ -87,15 +87,13 @@ class SelectedCategory extends Component {
     else{
       ServerService.fetchByCat(mainSearchCategory)
         .then(response => {
-          // console.log(response);
+          console.log(response);
           this.setState({products : response.data});
         })
         .catch(error => {
           // console.log(error);
         })
     }
-    // console.log(fetchedData);
-    // console.log(this.state);
   }
 
   render() {
@@ -137,9 +135,6 @@ class SelectedCategory extends Component {
     )
     if(this.state.products){
       data = (
-        // this.state.products.map(item => {
-        //   return <ProductBlock itme={item}/>
-        // })
         <ProductsDisplay products={this.state.products}/>
       )
     }

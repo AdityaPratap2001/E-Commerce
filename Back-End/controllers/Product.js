@@ -130,6 +130,38 @@ exports.getProductById = (req,res,next) => {
 
 
 
+exports.getCategoryProduct = (req, res, next) => {
+
+  let category = req.params.mainCategory;
+  // console.log(category);
+
+  let categoryProducts = [];
+
+  Product.find()
+    .then((productData) => {
+
+      productData.map((product) => {
+        if(product.category === category)
+        categoryProducts.push(product);
+      })
+
+      // console.log(categoryProducts);
+      res.status(200).json([...categoryProducts]);
+
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    })
+
+}
+
+
+
+
+
+
+
 
 exports.addProduct = (req, res, next) => {
 
