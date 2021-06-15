@@ -133,8 +133,6 @@ exports.getProductById = (req,res,next) => {
 exports.getCategoryProduct = (req, res, next) => {
 
   let category = req.params.mainCategory;
-  // console.log(category);
-
   let categoryProducts = [];
 
   Product.find()
@@ -157,6 +155,32 @@ exports.getCategoryProduct = (req, res, next) => {
 }
 
 
+
+
+
+exports.getSubCategoryProduct = (req,res,next) => {
+
+  let category = req.params.mainCategory;
+  let sub_category = req.params.subCategory;
+
+  Product.find()
+    .then((products) => {
+
+      let displayProducts = [];
+      products.map((product) => {
+        if(product.category === category && product.subCategory === sub_category){
+          displayProducts.push(product);
+        }
+      })
+
+      res.status(200).json([...displayProducts]);
+
+    })
+    .catch((err) => {
+      throw err;
+    })
+
+}
 
 
 

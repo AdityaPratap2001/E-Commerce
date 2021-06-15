@@ -86,9 +86,9 @@ class SelectedCategory extends Component {
     }
     else{
       ServerService.fetchByCat(mainSearchCategory)
-        .then(response => {
-          console.log(response);
-          this.setState({products : response.data});
+        .then(res => {
+          console.log(res);
+          this.setState({products : res.data});
         })
         .catch(error => {
           // console.log(error);

@@ -55,7 +55,7 @@ class ServerService{
   }
 
   fetchBySubcat(mainCat,subCat){
-    return axios.get(`/api/products/productCategory/productSubCategory/${mainCat}/${subCat}`)
+    return axios.get(`/api/products/productSubCategory/${mainCat}/${subCat}`)
   }
 
   fetchByCat(mainCat){
