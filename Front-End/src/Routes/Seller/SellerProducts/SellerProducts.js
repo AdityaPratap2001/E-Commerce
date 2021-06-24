@@ -17,7 +17,7 @@ class SellerProducts extends Component {
     ServerService.searchBySellerID(userID)
       .then((res) => {
         this.setState({ loading: false });
-        console.log(res);
+        // console.log(res);
         if (res.data.length === 0) {
           this.setState({ isEmpty: true });
         } else {

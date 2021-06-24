@@ -29,14 +29,11 @@ class SignUp extends Component {
       gender : details.gender,
       roles : details.user,
     }
-    console.log(userData);
 
     const sendData = (userData) =>{
       
       ServerService.register(userData)
         .then((response)=>{
-          // console.log(response);
-          // console.log(response.status);
           if(response.status === 200){
             this.setState({loading : false});
             this.setState({statusOk : true});
@@ -44,7 +41,7 @@ class SignUp extends Component {
         })
         .catch(error => {
           this.setState({statusOk : false});
-          console.log(error);
+          // console.log(error);
         })
     }
     sendData(userData);

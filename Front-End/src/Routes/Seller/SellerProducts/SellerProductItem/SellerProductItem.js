@@ -11,7 +11,7 @@ const SellerProductItem = ({item}) => {
         <div className='sellerItemLeft'>
           <div className='dataFields'>
             <div className='dataLabel'>Seller : </div>
-            <div className='dataAns'>{item.seller}</div>
+            <div className='dataAns'>{item.brand}</div>
           </div>
           <div className='dataFields'>
             <div className='dataLabel'>Title : </div>
@@ -19,7 +19,7 @@ const SellerProductItem = ({item}) => {
           </div>
           <div className='dataFields'>
             <div className='dataLabel'>Product Type : </div>
-            <div className='dataAns'>{item.prodType}</div>
+            <div className='dataAns'>{item.productType}</div>
           </div>
           <div className='dataFields'>
             <div className='dataLabel'>Price : </div>

@@ -4,7 +4,10 @@ import OrderItem from "./OrderItem/OrderItem";
 
 class Order extends Component {
   render() {
-    let data = this.props.order.productList.map((product, index) => {
+
+    let { order } = this.props;
+
+    let data = order.productList.map((product, index) => {
       return <OrderItem key={index} product={product} />;
     });
 
@@ -12,15 +15,15 @@ class Order extends Component {
       <div className="order">
         <div style={{display:'flex',justifyContent:'space-between'}}>
           <h6 className="orderDate">
-            #Order ID: {this.props.order.orderId}
+            #Order ID: {order.orderId}
           </h6>
           <h6 className="orderDate">
-            Order Date : {this.props.order.orderDate.slice(0, 10)}
+            Order Date : {order.orderDate.slice(0, 10)}
           </h6>
         </div>
         {data}
         <h6 className="amtPaid">
-          AMOUNT PAID : Rs. {this.props.order.orderValue}
+          AMOUNT PAID : Rs. {order.orderValue}
         </h6>
       </div>
     );

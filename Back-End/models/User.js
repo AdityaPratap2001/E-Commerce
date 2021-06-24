@@ -33,13 +33,53 @@ const UserSchema = new Schema({
   },
   cart: [
     {
-      product: {},
-      quantity: { type: Number, required: true }
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      quantity: { type: Number, required: true },
     },
   ],
-  wishlist: [],
-  orders: [],
-  pushedProducts: [],
+  wishlist: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+  orders: [
+    {
+      orderValue: {
+        type: Number,
+        required: true,
+      },
+      orderDate: {
+        type: String,
+        required: true,
+      },
+      productList: [
+        {
+          product: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
+      orderId: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  pushedProducts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);

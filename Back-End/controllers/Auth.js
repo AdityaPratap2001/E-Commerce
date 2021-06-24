@@ -9,8 +9,8 @@ const config = require("../config/config");
 
 exports.postUserSignup = (req, res, next) => {
   
-  console.log(req.body);
-  console.log(req.body.username);
+  // console.log(req.body);
+  // console.log(req.body.username);
   const email = req.body.username;
   const errors = validationResult(req);
   let generatedToken = null;
@@ -61,7 +61,7 @@ exports.postUserSignup = (req, res, next) => {
         msg: "User registered!",
       });
 
-      console.log("SENDING EMAIL____");
+      // console.log("SENDING EMAIL____");
       //sending email
       Email.sendLinkEmail(email,generatedToken);
 
@@ -94,10 +94,10 @@ exports.postUserLogin = (req, res, next) => {
         }
         //Unverified user
         else {
-          console.log("Email sent with token : ");
+          // console.log("Email sent with token : ");
           res.status(200).send("Not Verified!");
           //send Email with jwt token in link
-          console.log("SENDING EMAIL____");
+          // console.log("SENDING EMAIL____");
           Email.sendLinkEmail(email,generatedToken);
         }
       } 

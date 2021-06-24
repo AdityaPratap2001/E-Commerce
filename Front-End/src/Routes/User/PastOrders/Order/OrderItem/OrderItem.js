@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "./OrderItem.css";
-import ServerService from "../../../../../API/ServerService";
 
 class OrderItem extends Component {
   

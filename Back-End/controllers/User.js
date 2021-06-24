@@ -56,104 +56,81 @@ exports.changePassword = (req, res, next) => {
     });
 };
 
-
 // FOR SELLER
 exports.getUploadedProducts = (req, res, next) => {
-  let email = req.params.email;
-  let pushedArray = [];
-  User.findOne({ email: email })
+  let sellerEmail = req.params.email;
+
+  // console.log(`Seller -> ${email}`);
+  User.findOne({ email: sellerEmail })
+    .populate("pushedProducts")
+    .exec()
     .then((userData) => {
-      userData.pushedProducts.map((productData) => {
-        let prodObj = {
-            id: productData._id,
-            seller: email,
-            name: productData.name,
-            prodType: productData.productType,
-            price: productData.price,
-            material: productData.material,
-            category: productData.category,
-            subCategory: productData.subCategory,
-            stock: productData.stock,
-            fit: productData.fit,
-        };
-        pushedArray.push(prodObj);
-      });
-      // console.log(pushedArray);
-    })
-    .then(() => {
-      // console.log(pushedArray);
-      res.status(200).json(
-        [...pushedArray]
-      )
+      // console.log(userData.pushedProducts);
+      res.status(200).json([...userData.pushedProducts]);
     })
     .catch((err) => {
       throw err;
     });
 };
 
-
 //FOR FETCHING BUYER'S WISHLIST
-exports.fetchWishlist = (req,res,send) => {
-
+exports.fetchWishlist = (req, res, send) => {
   let email = req.params.email;
-  let wishlistedProducts = [];
 
   User.findOne({ email: email })
+    .populate("wishlist")
+    .exec()
     .then((userData) => {
-
-      userData.wishlist.map((product) => {
-        wishlistedProducts.push(product);
-      })
-
-      res.status(200).json([...wishlistedProducts]);
-
+      res.status(200).json([...userData.wishlist]);
     })
     .catch((err) => {
       throw err;
-    })
-
-}
-
+    });
+};
 
 //FOR FETCHING BUYER'S CART
-exports.fetchCart = (req,res,send) => {
+exports.fetchCart = (req, res, send) => {
+  let userEmail = req.params.email;
 
-  let email = req.params.email;
-  let cartProductsList = [];
-  let cartValue = 0;
-
-  User.findOne({ email: email })
+  User.findOne({ email: userEmail })
+    .populate({
+      path: "cart",
+      populate: {
+        path: "product",
+      },
+    })
     .then((userData) => {
+      
+      let cartList = [];
+      let cartValue = 0;
+      userData.cart.map((cartItem) => {
 
-      userData.cart.map((cartProduct) => {
-
+        // Finding if product exists in wishlist already
         let isInMyWishlist = false;
-        userData.wishlist.map((wishlistProduct) => {
-          // console.log(`${cartProduct.product._id} --- ${wishlistProduct._id}`)
-          if(wishlistProduct._id == cartProduct.product._id){
-            isInMyWishlist = true;
-          }
-        })
+        if(userData.wishlist.indexOf(cartItem.product._id.toString()) !== -1){
+          isInMyWishlist = true;
+        }
 
-        let cartObj = {
-          product: cartProduct.product,
-          quantity: cartProduct.quantity,
+        let cartItemData = {
+          product: cartItem.product,
+          quantity: cartItem.quantity,
           isInMyWishlist: isInMyWishlist,
         }
 
-        // console.log(cartObj);
-        cartProductsList.push(cartObj);
-        cartValue += (cartProduct.product.price * cartProduct.quantity);
+        cartValue += (cartItem.product.price * cartItem.quantity);
+        cartList.push(cartItemData);
+ 
       })
 
-      res.status(200).json({
-        list: [...cartProductsList],
-        cartValue: cartValue,
-      });
+      let cartData = {
+        list: cartList,
+        cartValue: cartValue
+      }
+      res.status(200).json(cartData);
 
     })
     .catch((err) => {
       throw err;
-    })
+    });
 
-}
+};

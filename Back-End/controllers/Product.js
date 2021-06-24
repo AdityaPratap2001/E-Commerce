@@ -2,9 +2,7 @@ const Product = require("../models/Product");
 const User = require("../models/User");
 const crypto = require("crypto");
 
-
 exports.getFeaturedProducts = (req, res, next) => {
-
   let featuredProducts = [];
   Product.find()
     .then((productsList) => {
@@ -27,9 +25,6 @@ exports.getFeaturedProducts = (req, res, next) => {
     });
 };
 
-
-
-
 exports.getPersonalizedProducts = (req, res, next) => {
   let email = req.params.email;
   let personalizedProducts = [];
@@ -50,8 +45,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
               name: product.name,
               price: product.price,
             });
-          } 
-          else if (gender === "female" && product.category === "Women") {
+          } else if (gender === "female" && product.category === "Women") {
             personalizedProducts.push({
               id: product._id,
               pic: product.imageUrl,
@@ -63,42 +57,33 @@ exports.getPersonalizedProducts = (req, res, next) => {
         });
         res.status(200).json([...personalizedProducts]);
       });
-
     })
     .catch((err) => {
       throw err;
     });
 };
 
-
-
-
-
-
-
-exports.getProductById = (req,res,next) => {
-
+exports.getProductById = (req, res, next) => {
   const productId = req.params.productId;
   const email = req.params.email;
 
   Product.findOne({ _id: productId })
     .then((productData) => {
-      
       User.findOne({ email: email })
         .then((userData) => {
-          
           let inWishlist = false;
           let inCart = false;
-          userData.wishlist.map((product) => {
-            if(product._id == productId){
+          userData.wishlist.map((product_id) => {
+            if (product_id.toString() === productId.toString()) {
               inWishlist = true;
             }
-          })
+          });
           userData.cart.map((product) => {
-            if(product.product._id == productId){
+            if (product.product._id.toString() === productId.toString()) {
               inCart = true;
             }
-          })
+          });
+
           res.status(200).json({
             seller: productData.brand,
             name: productData.name,
@@ -111,89 +96,64 @@ exports.getProductById = (req,res,next) => {
             subCategory: productData.subCategory,
             isWishlisted: inWishlist,
             isInCart: inCart,
-          })
-          
+          });
         })
         .catch((err) => {
           throw err;
-        })
+        });
     })
     .catch((err) => {
       throw err;
-    })
-
-}
-
-
-
-
-
-
+    });
+};
 
 exports.getCategoryProduct = (req, res, next) => {
-
   let category = req.params.mainCategory;
   let categoryProducts = [];
 
   Product.find()
     .then((productData) => {
-
       productData.map((product) => {
-        if(product.category === category)
-        categoryProducts.push(product);
-      })
+        if (product.category === category) categoryProducts.push(product);
+      });
 
       // console.log(categoryProducts);
       res.status(200).json([...categoryProducts]);
-
     })
     .catch((err) => {
       console.log(err);
       throw err;
-    })
+    });
+};
 
-}
-
-
-
-
-
-exports.getSubCategoryProduct = (req,res,next) => {
-
+exports.getSubCategoryProduct = (req, res, next) => {
   let category = req.params.mainCategory;
   let sub_category = req.params.subCategory;
 
   Product.find()
     .then((products) => {
-
       let displayProducts = [];
       products.map((product) => {
-        if(product.category === category && product.subCategory === sub_category){
+        if (
+          product.category === category &&
+          product.subCategory === sub_category
+        ) {
           displayProducts.push(product);
         }
-      })
+      });
 
       res.status(200).json([...displayProducts]);
-
     })
     .catch((err) => {
       throw err;
-    })
-
-}
-
-
-
-
-
+    });
+};
 
 exports.addProduct = (req, res, next) => {
-
-  let sellerID = null;
   User.findOne({ email: req.body.sellerUsername })
 
     .then((userData) => {
-      sellerID = userData._id;
+      let sellerID = userData._id;
       const newProduct = new Product({
         name: req.body.name,
         price: req.body.price,
@@ -210,7 +170,7 @@ exports.addProduct = (req, res, next) => {
       newProduct
         .save()
         .then(() => {
-          let pushedProducts = [...userData.pushedProducts, newProduct];
+          let pushedProducts = [...userData.pushedProducts, newProduct._id];
 
           userData.pushedProducts = pushedProducts;
           userData.save().then(() => {
@@ -231,118 +191,78 @@ exports.addProduct = (req, res, next) => {
     });
 };
 
+//-------WISHLIST-CONTROLLER-------------//
 
-
-// WISHLIST CONTROLLER
-exports.addToWishlist = (req,res,next) => {
-
+exports.addToWishlist = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
-  let selectedProduct = {};
-
   Product.findOne({ _id: productId })
-    .then((productData) => {
-      selectedProduct = productData;
-      return selectedProduct
-    })
-    .then((selectedProduct) => {
+    .then(() => {
       User.findOne({ email: userEmail })
         .then((userData) => {
-
-          let wishlistedList = [...userData.wishlist];
-          wishlistedList.push(selectedProduct);
-
-          userData.wishlist = wishlistedList;
+          let newWislist = [...userData.wishlist, productId];
+          userData.wishlist = newWislist;
           userData.save();
 
           res.status(200).send("Product added to wishlist");
         })
         .catch((err) => {
           throw err;
-        })
+        });
     })
     .catch((err) => {
       throw err;
-    })
-}
+    });
+};
 
-
-exports.removeFromWishlist = (req,res,next) => {
-
+exports.removeFromWishlist = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
+  User.findOne({ email: userEmail })
+    .populate("wishlist")
+    .then((userData) => {
+      let newWishlist = [];
+      userData.wishlist.map((product) => {
+        if (product._id.toString() !== productId.toString()) {
+          newWishlist.push(product._id);
+        }
+      });
 
-  Product.findOne({ _id: productId })
-    .then((productData) => {
-      return productData
-    })
-    .then((productData) => {
-      User.findOne({ email: userEmail })
-        .then((userData) => {
-
-          let wishlistedList = [];
-          userData.wishlist.map((wishlistProduct) => {
-            if(wishlistProduct._id != productId){
-              wishlistedList.push(wishlistProduct);
-            }
-          })
-          userData.wishlist = wishlistedList;
-          userData.save();
-
-          res.status(200).send("Product removed from wishlist");
-        })
-        .catch((err) => {
-          throw err;
-        })
-
+      userData.wishlist = newWishlist;
+      userData.save();
+      res.status(200).send("Product removed from wishlist");
     })
     .catch((err) => {
-      throw err
-    })
+      throw err;
+    });
+};
 
-}
+//-----------CART-CONTROLLER-----------//
 
-
-
-
-// CART CONTROLLER
-exports.addToCart = (req,res,send) => {
-  
+exports.addToCart = (req, res, send) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
   let productQuantity = req.body.productAmt;
 
-  let selectedProduct = {};
-  
   Product.findOne({ _id: productId })
     .then((productData) => {
-
-      // console.log(productData);
-      if(productData.stock < productQuantity){
-        const error = new Error("");
-        error.statusCode = 422;
-        error.data = {
-          msg: "Items out of stock, trying adding less quantity!",
-        };
-        throw error;
+      if (productData.stock < productQuantity) {
+        res.status(422).send({
+          msg: "Items out of stock, trying adding lesser quantity!",
+        });
       }
 
-      selectedProduct = productData;
-      return selectedProduct;
-    })
-    .then((selectedProduct) => {
-
+      // If stocks for product is available
       User.findOne({ email: userEmail })
         .then((userData) => {
+          let newProduct = {
+            product: productId,
+            quantity: productQuantity,
+          };
 
-          let newCart = [...userData.cart];
-          newCart.push({
-            product: selectedProduct,
-            quantity: Number(productQuantity)
-          })
-
+          let newCart = [...userData.cart, newProduct];
           userData.cart = newCart;
           userData.save();
 
@@ -350,149 +270,138 @@ exports.addToCart = (req,res,send) => {
         })
         .catch((err) => {
           throw err;
-        })
-
+        });
     })
     .catch((err) => {
       throw err;
-    })
+    });
+};
 
-}
-
-
-exports.removeFromCart = (req,res,next) => {
-
+exports.removeFromCart = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
-  let selectedProduct = {};
-
-  Product.findOne({ _id: productId })
-    .then((productData) => {
-      return productData;
+  User.findOne({ email: userEmail })
+    .populate({
+      path: "cart",
+      populate: {
+        path: "product",
+      },
     })
-    .then((productData)=>{
+    .then((userData) => {
+      let newCart = [];
+      userData.cart.map((cartItem) => {
+        if (cartItem.product._id.toString() !== productId.toString()) {
+          newCart.push(cartItem);
+        }
+      });
 
-      User.findOne({ email: userEmail })
-        .then((userData) => {
-
-          let newCart = [];
-          userData.cart.map((cartItem) => {
-            if(cartItem.product._id != productId){
-              newCart.push(cartItem);
-            }
-          })
-
-          userData.cart = newCart;
-          userData.save();
-
-          res.status(200).send("Product removed from cart!");
-        })
-        .catch((err) => {
-          throw err;
-        })
+      userData.cart = newCart;
+      userData.save();
+      res.status(200).send("Product removed from cart!");
     })
     .catch((err) => {
       throw err;
-    })
+    });
+};
 
-}
-
-
-exports.moveFromCartToWishlist = (req,res,next) => {
-
+exports.moveFromCartToWishlist = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
   User.findOne({ email: userEmail })
     .then((userData) => {
+      let newCart = [];
+      userData.cart.map((cartItem) => {
+        if (cartItem.product._id.toString() !== productId.toString()) {
+          newCart.push(cartItem);
+        }
+      });
 
-      Product.findOne({ _id: productId })
-        .then((productData) => {
-          let newWislist = [...userData.wishlist];
-          newWislist.push(productData);
+      let newWishlist = [...userData.wishlist];
+      if (userData.wishlist.indexOf(productId.toString()) === -1) {
+        newWishlist.push(productId);
+      }
 
-          userData.wishlist = newWislist;
-          userData.save();
-        })
-        .then(() => {
-          let newCartList = [];
-          userData.cart.push((cartProduct) => {
-            if(cartProduct.product._id != productId){
-              newCartList.push(cartProduct);
-            }
-          })
+      userData.cart = newCart;
+      userData.wishlist = newWishlist;
+      userData.save();
 
-          userData.cart = newCartList;
-          userData.save();
-
-          res.status(200).send('Product successfullly moved to wishlist!')
-        })
-        .catch((err) => {
-          throw err;
-        })
+      res.status(200).send("Product successfullly moved to wishlist!");
     })
     .catch((err) => {
-      throw err;
-    })
+      console.log(err);
+    });
+};
 
-}
-
+//------ORDERS--------//
 
 // PLACING ORDER
-exports.placeOrder = (req,res,next) => {
-
+exports.placeOrder = (req, res, next) => {
   let userEmail = req.body.email;
 
   User.findOne({ email: userEmail })
+    .populate({
+      path: "cart",
+      populate: {
+        path: "product",
+      },
+    })
     .then((userData) => {
-
-      let orderValue = 50;
-      let orderDate = new Date(); 
+      let orderTotal = 50;
+      let orderDate = new Date();
       let orderList = [];
-      
+
       userData.cart.map((cartItem) => {
         orderList.push(cartItem);
-        orderValue += (cartItem.product.price * cartItem.quantity);
-      })
-       
+        orderTotal +=
+          Number(cartItem.product.price) * Number(cartItem.quantity);
+
+        Product.findOne({ _id: cartItem.product._id }).then((productData) => {
+          let newStock = productData.stock - cartItem.quantity;
+          productData.stock = newStock;
+          productData.save();
+        });
+      });
+
       let newOrder = {
-        orderValue: orderValue,
-        orderDate: orderDate,
+        orderValue: orderTotal,
+        orderDate: orderDate.toString(),
         productList: orderList,
         orderId: crypto.randomBytes(12).toString("hex"),
-      }
+      };
 
-      let newOrderList = [...userData.orders];
-      newOrderList.push(newOrder);
-
+      let newOrderList = [...userData.orders, newOrder];
       userData.orders = newOrderList;
       userData.cart = [];
-      console.log(newOrderList);
       userData.save();
 
-      res.status(200).send('Order placed successfully!');
+      res.status(200).send("Order placed successfully!");
     })
     .catch((err) => {
       throw err;
-    })
-
-}
-
+    });
+};
 
 // GET PAST-ORDERS
-exports.getPastOrders = (req,res,send) => {
-
+exports.getPastOrders = (req, res, send) => {
   let userEmail = req.params.email;
 
   User.findOne({ email: userEmail })
+    .populate({
+      path: "orders",
+      populate: {
+        path: "productList",
+        populate: {
+          path: "product",
+        },
+      },
+    })
     .then((userData) => {
-
-      res.status(200).send(userData.orders);
-
+      let pastOrders = userData.orders;
+      res.status(200).send(pastOrders);
     })
     .catch((err) => {
       throw err;
-    })
-
-}
+    });
+};

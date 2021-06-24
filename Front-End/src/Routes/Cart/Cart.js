@@ -29,7 +29,7 @@ class Cart extends Component {
 
     ServerService.fetchCartDetailsByID(userId)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.list.length === 0) {
           this.setState({ isEmpty: true });
         } else {

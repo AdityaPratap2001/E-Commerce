@@ -36,7 +36,7 @@ class Wishlist extends Component {
     
     ServerService.fetchWishlistDetailsByID(userId)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if(res.data.length === 0){
           this.setState({isEmpty : true})
         }
