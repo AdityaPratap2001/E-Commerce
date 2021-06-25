@@ -35,7 +35,9 @@ exports.getPersonalizedProducts = (req, res, next) => {
       gender = userData.gender;
     })
     .then(() => {
-      Product.find().then((productList) => {
+      Product.find()
+      .then((productList) => {
+        
         productList.map((product) => {
           if (gender === "male" && product.category === "Men") {
             personalizedProducts.push({
@@ -45,7 +47,8 @@ exports.getPersonalizedProducts = (req, res, next) => {
               name: product.name,
               price: product.price,
             });
-          } else if (gender === "female" && product.category === "Women") {
+          } 
+          else if (gender === "female" && product.category === "Women") {
             personalizedProducts.push({
               id: product._id,
               pic: product.imageUrl,
@@ -55,6 +58,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
             });
           }
         });
+
         res.status(200).json([...personalizedProducts]);
       });
     })
@@ -400,6 +404,78 @@ exports.getPastOrders = (req, res, send) => {
     .then((userData) => {
       let pastOrders = userData.orders;
       res.status(200).send(pastOrders);
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+// RETURNING SEARCH-RESULTS
+exports.returnSearchResults = (req, res, next) => {
+  let query = req.params.query.toString();
+
+  Product.find()
+    .then((productsList) => {
+      let searchResults = [];
+      productsList.map((product) => {
+        
+        if (
+          product.name.toLowerCase().includes(query) ||
+          product.brand.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query) ||
+          product.subCategory.toLowerCase().includes(query) ||
+          product.fit.toLowerCase().includes(query) ||
+          product.material.toLowerCase().includes(query) ||
+          product.productType.toLowerCase().includes(query)
+        ) {
+          searchResults.push({
+            id: product._id,
+            pic: product.imageUrl,
+            seller: product.brand,
+            name: product.name,
+            price: product.price,
+          });
+        }
+      });
+
+      res.status(200).send([...searchResults]);
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+exports.returnGenderSearchResults = (req, res, next) => {
+  let query = req.params.query.toString();
+  let gender = req.params.gender.toString();
+
+  Product.find()
+    .then((productsList) => {
+      let searchResults = [];
+      productsList.map((product) => {
+
+        if (
+          (
+            product.name.toLowerCase().includes(query) ||
+            product.brand.toLowerCase().includes(query) ||
+            product.category.toLowerCase().includes(query) ||
+            product.subCategory.toLowerCase().includes(query) ||
+            product.fit.toLowerCase().includes(query) ||
+            product.material.toLowerCase().includes(query) ||
+            product.productType.toLowerCase().includes(query)
+          )
+          && product.category === gender
+        ) {
+          searchResults.push({
+            id: product._id,
+            pic: product.imageUrl,
+            seller: product.brand,
+            name: product.name,
+            price: product.price,
+          });
+        }
+      });
+
+      res.status(200).send([...searchResults]);
     })
     .catch((err) => {
       throw err;

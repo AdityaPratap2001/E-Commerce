@@ -17,11 +17,13 @@ class SearchProduct extends Component {
   }
 
   componentDidMount(){
+    
     let finalTerm = this.state.searchTerm.toLowerCase();
+    
     if(this.state.gender){      
       ServerService.searchByGender(this.state.gender,finalTerm)
         .then(res => {
-          // console.log(res.data);
+          console.log(res);
           if(res.data.length === 0){
             this.setState({noItems : true});
           }
@@ -33,8 +35,8 @@ class SearchProduct extends Component {
           // console.log(err);
         })
     }
+    
     else{
-      // axios.get(`/api/products/productType/${this.state.searchTerm}`)
       ServerService.searchByTerm(finalTerm)
         .then(res => {
           // console.log(res);
@@ -54,13 +56,12 @@ class SearchProduct extends Component {
   render() {
 
     let data = (
-      // <h2>Loading...</h2>
       <img src={searchLoaderSRC} className='searchLoadImg' alt='searchLoader'/>
     )
     if(this.state.products){
       data = (
-        this.state.products.map((item,index) => {
-          return <ProductBlock key={index} item={item}/>
+        this.state.products.map((product,index) => {
+          return <ProductBlock key={index} item={product}/>
         })
       )
     }
