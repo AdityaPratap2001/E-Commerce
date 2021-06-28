@@ -7,8 +7,13 @@ const config = require('./config/config');
 const cors = require('cors');
 const crypto = require("crypto");
 const path = require('path');
+// const redis = require('redis');
 const app = express();
 
+
+// // Redis
+// const REDIS_PORT = process.env.PORT || 6379;
+// const client = redis.createClient(6379);
 
 
 // Middleware for parsing the request body 
@@ -60,7 +65,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
-
 
 
 

@@ -1,6 +1,11 @@
 const Product = require("../models/Product");
 const User = require("../models/User");
 const crypto = require("crypto");
+const redis = require("redis");
+
+// Redis
+const REDIS_PORT = process.env.PORT || 6379;
+const client = redis.createClient(REDIS_PORT);
 
 exports.getFeaturedProducts = (req, res, next) => {
   let featuredProducts = [];
@@ -35,9 +40,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
       gender = userData.gender;
     })
     .then(() => {
-      Product.find()
-      .then((productList) => {
-        
+      Product.find().then((productList) => {
         productList.map((product) => {
           if (gender === "male" && product.category === "Men") {
             personalizedProducts.push({
@@ -47,8 +50,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
               name: product.name,
               price: product.price,
             });
-          } 
-          else if (gender === "female" && product.category === "Women") {
+          } else if (gender === "female" && product.category === "Women") {
             personalizedProducts.push({
               id: product._id,
               pic: product.imageUrl,
@@ -71,44 +73,66 @@ exports.getProductById = (req, res, next) => {
   const productId = req.params.productId;
   const email = req.params.email;
 
-  Product.findOne({ _id: productId })
-    .then((productData) => {
-      User.findOne({ email: email })
-        .then((userData) => {
-          let inWishlist = false;
-          let inCart = false;
-          userData.wishlist.map((product_id) => {
-            if (product_id.toString() === productId.toString()) {
-              inWishlist = true;
-            }
-          });
-          userData.cart.map((product) => {
-            if (product.product._id.toString() === productId.toString()) {
-              inCart = true;
-            }
-          });
+  // Searching if data exists in redis-cache
+  client.get(`${email}_${productId}`, (err, data) => {
+    if (err) {
+      throw err;
+    }
 
-          res.status(200).json({
-            seller: productData.brand,
-            name: productData.name,
-            price: productData.price,
-            prodType: productData.productType,
-            fit: productData.fit,
-            material: productData.material,
-            picture: productData.imageUrl,
-            category: productData.category,
-            subCategory: productData.subCategory,
-            isWishlisted: inWishlist,
-            isInCart: inCart,
-          });
+    if (data !== null) {
+      // console.log("Fetched data from redis!!!");
+      return res.status(200).json(JSON.parse(data));
+    } 
+    else {
+      Product.findOne({ _id: productId })
+        .then((productData) => {
+          User.findOne({ email: email })
+            .then((userData) => {
+              // console.log("Sending request!!!");
+
+              let inWishlist = false;
+              let inCart = false;
+              userData.wishlist.map((product_id) => {
+                if (product_id.toString() === productId.toString()) {
+                  inWishlist = true;
+                }
+              });
+              userData.cart.map((product) => {
+                if (product.product._id.toString() === productId.toString()) {
+                  inCart = true;
+                }
+              });
+
+              let sendData = {
+                seller: productData.brand,
+                name: productData.name,
+                price: productData.price,
+                prodType: productData.productType,
+                fit: productData.fit,
+                material: productData.material,
+                picture: productData.imageUrl,
+                category: productData.category,
+                subCategory: productData.subCategory,
+                isWishlisted: inWishlist,
+                isInCart: inCart,
+              };
+
+              client.setex(
+                `${email}_${productId}`,
+                3600,
+                JSON.stringify(sendData)
+              );
+              res.status(200).json(sendData);
+            })
+            .catch((err) => {
+              throw err;
+            });
         })
         .catch((err) => {
           throw err;
         });
-    })
-    .catch((err) => {
-      throw err;
-    });
+    }
+  });
 };
 
 exports.getCategoryProduct = (req, res, next) => {
@@ -118,7 +142,14 @@ exports.getCategoryProduct = (req, res, next) => {
   Product.find()
     .then((productData) => {
       productData.map((product) => {
-        if (product.category === category) categoryProducts.push(product);
+        if (product.category === category)
+          categoryProducts.push({
+            id: product._id,
+            pic: product.imageUrl,
+            seller: product.brand,
+            name: product.name,
+            price: product.price,
+          });
       });
 
       // console.log(categoryProducts);
@@ -142,7 +173,13 @@ exports.getSubCategoryProduct = (req, res, next) => {
           product.category === category &&
           product.subCategory === sub_category
         ) {
-          displayProducts.push(product);
+          displayProducts.push({
+            id: product._id,
+            pic: product.imageUrl,
+            seller: product.brand,
+            name: product.name,
+            price: product.price,
+          });
         }
       });
 
@@ -418,7 +455,6 @@ exports.returnSearchResults = (req, res, next) => {
     .then((productsList) => {
       let searchResults = [];
       productsList.map((product) => {
-        
         if (
           product.name.toLowerCase().includes(query) ||
           product.brand.toLowerCase().includes(query) ||
@@ -452,18 +488,15 @@ exports.returnGenderSearchResults = (req, res, next) => {
     .then((productsList) => {
       let searchResults = [];
       productsList.map((product) => {
-
         if (
-          (
-            product.name.toLowerCase().includes(query) ||
+          (product.name.toLowerCase().includes(query) ||
             product.brand.toLowerCase().includes(query) ||
             product.category.toLowerCase().includes(query) ||
             product.subCategory.toLowerCase().includes(query) ||
             product.fit.toLowerCase().includes(query) ||
             product.material.toLowerCase().includes(query) ||
-            product.productType.toLowerCase().includes(query)
-          )
-          && product.category === gender
+            product.productType.toLowerCase().includes(query)) &&
+          product.category === gender
         ) {
           searchResults.push({
             id: product._id,

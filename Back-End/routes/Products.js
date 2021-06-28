@@ -1,6 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
+// const cache = (req,res,next) => {
+
+//   const { productId } = req.params;
+
+//   client.get(productId,(err,data) => {
+
+//     if(err){
+//       throw err;
+//     }
+//     if(data !== null){
+//       res.send('Hello');
+//     }
+//     else{
+//       next();
+//     }
+
+//   })
+
+// }
+
 const productController = require("../controllers/Product");
 
 // Adding product to DB
