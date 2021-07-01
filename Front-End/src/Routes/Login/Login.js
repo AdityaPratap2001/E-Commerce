@@ -83,7 +83,7 @@ class Login extends Component {
   }
 
   sendPass = (email) => {
-    if(email === null || email==='' || email===' '){
+    if(email === null || email===' '){
       alert('Enter emailID!');
       return
     }

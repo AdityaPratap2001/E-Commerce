@@ -27,8 +27,7 @@ exports.getFeaturedProducts = (req, res, next) => {
             name: product.name,
             price: product.price,
           });
-        } 
-        else {
+        } else {
           i -= 1;
         }
       }
@@ -87,8 +86,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
               name: product.name,
               price: product.price,
             });
-          } 
-          else {
+          } else {
             i -= 1;
           }
         }
@@ -106,25 +104,28 @@ exports.getProductById = (req, res, next) => {
   const email = req.params.email;
 
   // Searching if data exists in redis-cache
-  console.log(client);
+
   if (client) {
     client.get(`${email}_${productId}`, (err, data) => {
       if (err) {
         throw err;
       }
 
+      // console.log(JSON.parse(data));
+
       if (data !== null) {
-        // console.log("Fetched data from redis!!!");
+        console.log("Fetched data from redis!!!");
         return res.status(200).json(JSON.parse(data));
       } else {
         Product.findOne({ _id: productId })
           .then((productData) => {
             User.findOne({ email: email })
               .then((userData) => {
-                // console.log("Sending request!!!");
+                console.log("Sending request!!!");
 
                 let inWishlist = false;
                 let inCart = false;
+
                 userData.wishlist.map((product_id) => {
                   if (product_id.toString() === productId.toString()) {
                     inWishlist = true;
@@ -273,12 +274,44 @@ exports.addToWishlist = (req, res, next) => {
   let productId = req.body.productId;
 
   Product.findOne({ _id: productId })
-    .then(() => {
+    .then((productData) => {
       User.findOne({ email: userEmail })
+        .populate({
+          path: "cart",
+          populate: {
+            path: "product",
+          },
+        })
         .then((userData) => {
           let newWislist = [...userData.wishlist, productId];
           userData.wishlist = newWislist;
           userData.save();
+
+          let inCart = false;
+          userData.cart.map((product) => {
+            if (product.product._id.toString() === productId.toString()) {
+              inCart = true;
+            }
+          });
+          let redisData = {
+            seller: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            prodType: productData.productType,
+            fit: productData.fit,
+            material: productData.material,
+            picture: productData.imageUrl,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            isWishlisted: true,
+            isInCart: inCart,
+          };
+
+          client.setex(
+            `${userEmail}_${productId}`,
+            3600,
+            JSON.stringify(redisData)
+          );
 
           res.status(200).send("Product added to wishlist");
         })
@@ -295,19 +328,57 @@ exports.removeFromWishlist = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
-  User.findOne({ email: userEmail })
-    .populate("wishlist")
-    .then((userData) => {
-      let newWishlist = [];
-      userData.wishlist.map((product) => {
-        if (product._id.toString() !== productId.toString()) {
-          newWishlist.push(product._id);
-        }
-      });
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      User.findOne({ email: userEmail })
+        .populate({
+          path: "cart",
+          populate: {
+            path: "product",
+          },
+        })
+        .then((userData) => {
+          let newWishlist = [];
+          userData.wishlist.map((product) => {
+            if (product._id.toString() !== productId.toString()) {
+              newWishlist.push(product._id);
+            }
+          });
 
-      userData.wishlist = newWishlist;
-      userData.save();
-      res.status(200).send("Product removed from wishlist");
+          userData.wishlist = newWishlist;
+          userData.save();
+
+          let inCart = false;
+          userData.cart.map((product) => {
+            if (product.product._id.toString() === productId.toString()) {
+              inCart = true;
+            }
+          });
+          let redisData = {
+            seller: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            prodType: productData.productType,
+            fit: productData.fit,
+            material: productData.material,
+            picture: productData.imageUrl,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            isWishlisted: false,
+            isInCart: inCart,
+          };
+
+          client.setex(
+            `${userEmail}_${productId}`,
+            3600,
+            JSON.stringify(redisData)
+          );
+
+          res.status(200).send("Product removed from wishlist");
+        })
+        .catch((err) => {
+          throw err;
+        });
     })
     .catch((err) => {
       throw err;
@@ -341,6 +412,32 @@ exports.addToCart = (req, res, send) => {
           userData.cart = newCart;
           userData.save();
 
+          let inWishlist = false;
+          userData.wishlist.map((product_id) => {
+            if (product_id.toString() === productId.toString()) {
+              inWishlist = true;
+            }
+          });
+          let redisData = {
+            seller: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            prodType: productData.productType,
+            fit: productData.fit,
+            material: productData.material,
+            picture: productData.imageUrl,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            isWishlisted: inWishlist,
+            isInCart: true,
+          };
+
+          client.setex(
+            `${userEmail}_${productId}`,
+            3600,
+            JSON.stringify(redisData)
+          );
+
           res.status(200).send("Product added to cart");
         })
         .catch((err) => {
@@ -356,24 +453,57 @@ exports.removeFromCart = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
 
-  User.findOne({ email: userEmail })
-    .populate({
-      path: "cart",
-      populate: {
-        path: "product",
-      },
-    })
-    .then((userData) => {
-      let newCart = [];
-      userData.cart.map((cartItem) => {
-        if (cartItem.product._id.toString() !== productId.toString()) {
-          newCart.push(cartItem);
-        }
-      });
+  Product.findOne({ _id: productId })
+    .then((productData) => {
+      User.findOne({ email: userEmail })
+        .populate({
+          path: "cart",
+          populate: {
+            path: "product",
+          },
+        })
+        .then((userData) => {
+          let newCart = [];
+          userData.cart.map((cartItem) => {
+            if (cartItem.product._id.toString() !== productId.toString()) {
+              newCart.push(cartItem);
+            }
+          });
 
-      userData.cart = newCart;
-      userData.save();
-      res.status(200).send("Product removed from cart!");
+          userData.cart = newCart;
+          userData.save();
+
+          let inWishlist = false;
+          userData.wishlist.map((product_id) => {
+            if (product_id.toString() === productId.toString()) {
+              inWishlist = true;
+            }
+          });
+          let redisData = {
+            seller: productData.brand,
+            name: productData.name,
+            price: productData.price,
+            prodType: productData.productType,
+            fit: productData.fit,
+            material: productData.material,
+            picture: productData.imageUrl,
+            category: productData.category,
+            subCategory: productData.subCategory,
+            isWishlisted: inWishlist,
+            isInCart: false,
+          };
+
+          client.setex(
+            `${userEmail}_${productId}`,
+            3600,
+            JSON.stringify(redisData)
+          );
+
+          res.status(200).send("Product removed from cart!");
+        })
+        .catch((err) => {
+          throw err;
+        });
     })
     .catch((err) => {
       throw err;
