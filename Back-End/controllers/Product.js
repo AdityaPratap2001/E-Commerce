@@ -9,21 +9,30 @@ const client = redis.createClient(REDIS_PORT);
 
 exports.getFeaturedProducts = (req, res, next) => {
   let featuredProducts = [];
+  let idxList = [];
+
   Product.find()
     .then((productsList) => {
-      // console.log(productsList);
-      productsList.map((product) => {
-        featuredProducts.push({
-          id: product._id,
-          pic: product.imageUrl,
-          seller: product.brand,
-          name: product.name,
-          price: product.price,
-        });
-      });
+      let total_length = productsList.length;
+      for (i = 0; i < 8; i++) {
+        let idx = Math.floor(Math.random() * total_length);
+        if (idxList.indexOf(idx) === -1) {
+          idxList.push(idx);
+          let product = productsList[idx];
 
-      // console.log(featuredProducts);
-      res.status(200).json([...featuredProducts]);
+          featuredProducts.push({
+            id: product._id,
+            pic: product.imageUrl,
+            seller: product.brand,
+            name: product.name,
+            price: product.price,
+          });
+        } 
+        else {
+          i -= 1;
+        }
+      }
+      res.status(200).send(featuredProducts.slice(0, 8));
     })
     .catch((err) => {
       throw err;
@@ -34,6 +43,7 @@ exports.getPersonalizedProducts = (req, res, next) => {
   let email = req.params.email;
   let personalizedProducts = [];
   let gender = null;
+  let idxList = [];
 
   User.findOne({ email: email })
     .then((userData) => {
@@ -61,7 +71,29 @@ exports.getPersonalizedProducts = (req, res, next) => {
           }
         });
 
-        res.status(200).json([...personalizedProducts]);
+        let genderizedProducts = [];
+        let total_length = personalizedProducts.length;
+
+        for (i = 0; i < 8; i++) {
+          let idx = Math.floor(Math.random() * total_length);
+          if (idxList.indexOf(idx) === -1) {
+            idxList.push(idx);
+            let product = personalizedProducts[idx];
+
+            genderizedProducts.push({
+              id: product._id,
+              pic: product.imageUrl,
+              seller: product.brand,
+              name: product.name,
+              price: product.price,
+            });
+          } 
+          else {
+            i -= 1;
+          }
+        }
+
+        res.status(200).send(genderizedProducts.slice(0, 8));
       });
     })
     .catch((err) => {
@@ -74,65 +106,67 @@ exports.getProductById = (req, res, next) => {
   const email = req.params.email;
 
   // Searching if data exists in redis-cache
-  client.get(`${email}_${productId}`, (err, data) => {
-    if (err) {
-      throw err;
-    }
+  console.log(client);
+  if (client) {
+    client.get(`${email}_${productId}`, (err, data) => {
+      if (err) {
+        throw err;
+      }
 
-    if (data !== null) {
-      // console.log("Fetched data from redis!!!");
-      return res.status(200).json(JSON.parse(data));
-    } 
-    else {
-      Product.findOne({ _id: productId })
-        .then((productData) => {
-          User.findOne({ email: email })
-            .then((userData) => {
-              // console.log("Sending request!!!");
+      if (data !== null) {
+        // console.log("Fetched data from redis!!!");
+        return res.status(200).json(JSON.parse(data));
+      } else {
+        Product.findOne({ _id: productId })
+          .then((productData) => {
+            User.findOne({ email: email })
+              .then((userData) => {
+                // console.log("Sending request!!!");
 
-              let inWishlist = false;
-              let inCart = false;
-              userData.wishlist.map((product_id) => {
-                if (product_id.toString() === productId.toString()) {
-                  inWishlist = true;
-                }
+                let inWishlist = false;
+                let inCart = false;
+                userData.wishlist.map((product_id) => {
+                  if (product_id.toString() === productId.toString()) {
+                    inWishlist = true;
+                  }
+                });
+                userData.cart.map((product) => {
+                  if (product.product._id.toString() === productId.toString()) {
+                    inCart = true;
+                  }
+                });
+
+                let sendData = {
+                  seller: productData.brand,
+                  name: productData.name,
+                  price: productData.price,
+                  prodType: productData.productType,
+                  fit: productData.fit,
+                  material: productData.material,
+                  picture: productData.imageUrl,
+                  category: productData.category,
+                  subCategory: productData.subCategory,
+                  isWishlisted: inWishlist,
+                  isInCart: inCart,
+                };
+
+                client.setex(
+                  `${email}_${productId}`,
+                  3600,
+                  JSON.stringify(sendData)
+                );
+                res.status(200).json(sendData);
+              })
+              .catch((err) => {
+                throw err;
               });
-              userData.cart.map((product) => {
-                if (product.product._id.toString() === productId.toString()) {
-                  inCart = true;
-                }
-              });
-
-              let sendData = {
-                seller: productData.brand,
-                name: productData.name,
-                price: productData.price,
-                prodType: productData.productType,
-                fit: productData.fit,
-                material: productData.material,
-                picture: productData.imageUrl,
-                category: productData.category,
-                subCategory: productData.subCategory,
-                isWishlisted: inWishlist,
-                isInCart: inCart,
-              };
-
-              client.setex(
-                `${email}_${productId}`,
-                3600,
-                JSON.stringify(sendData)
-              );
-              res.status(200).json(sendData);
-            })
-            .catch((err) => {
-              throw err;
-            });
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
-  });
+          })
+          .catch((err) => {
+            throw err;
+          });
+      }
+    });
+  }
 };
 
 exports.getCategoryProduct = (req, res, next) => {

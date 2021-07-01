@@ -84,7 +84,7 @@
   border: solid 1.8px rgb(240, 53, 91);
   padding: 7px;
   color:  rgb(240, 53, 91);
-  background-color: floralwhite;
+  background-color: #ffffff;
   outline: none;
 }
 .conditional_render button:hover{
