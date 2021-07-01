@@ -39,7 +39,7 @@ An E-commerce project where user can buy or sell various fashion related product
 <img width="82%" src="Project_Images/ProfileDetails.png">
 </p>
 
-* ### OrderHistory ###
+* ### Past Orders ###
 <p align="center">
   <img width="82%" src="Project_Images/OrderHistory.png">
 </p>
