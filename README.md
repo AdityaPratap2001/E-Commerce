@@ -12,3 +12,66 @@
 
 An E-commerce project where user can buy or sell various fashion related products! 
 
+## Screens for Buyer-role
+
+* ### Categorized Products ### 
+<p align="center">
+  <img width="82%" src="Project_Images/SubcategorizedProducts.png">
+</p>
+
+* ### Product detail page ###
+<p align="center">
+  <img width="82%" src="Project_Images/ProductDisplay.png">
+</p>
+
+* ### Wishlist ###
+<p align="center">
+  <img width="82%" src="Project_Images/Wishlist.png">
+</p>
+
+* ### Cart ###
+<p align="center">
+  <img width="82%" src="Project_Images/Cart.png">
+</p>
+
+* ### Profile Details ###
+<p align="center">
+<img width="82%" src="Project_Images/ProfileDetails.png">
+</p>
+
+* ### OrderHistory ###
+<p align="center">
+  <img width="82%" src="Project_Images/OrderHistory.png">
+</p>
+
+* ### Featured Products
+<p align="center">
+  <img width="82%" src="Project_Images/FeaturedProducts.png">
+</p>
+
+* ### Personalized Products
+<p align="center">
+  <img width="82%" src="Project_Images/PersonalizedProducts.png">
+</p>
+
+* ### Landing Page ###
+<p align="center">
+  <img width="82%" src="Project_Images/HomePage.png">
+</p>
+
+## Screens for Seller-role
+
+* ### Landing Page ### 
+<p align="center">
+  <img width="82%" src="Project_Images/SellerLandingPage.png">
+</p>
+
+* ### Upload Product ### 
+<p align="center">
+  <img width="82%" src="Project_Images/SellProduct.png">
+</p>
+
+* ### View Products' stocks ### 
+<p align="center">
+  <img width="82%" src="Project_Images/ProductsSold.png">
+</p>
