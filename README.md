@@ -10,7 +10,12 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" height="28" width="100" />
 </p>
 
-An E-commerce project where user can buy or sell various fashion related products! 
+An E-commerce project with completely different user-expirience for sellers & buyers. A ***role*** (seller/buyer) is being allocated to user upon signing up on the platform.
+Sellers can upload their products and keep track of their stocks, while the buyers can buy from a wide-variety of fashion-realted products.<br><br>
+This repository has **2 Branches**:
+
+* **master** : This branch contains the code with the proper implementation of ***redis-caching***. Hence before running the code in this branch you should install and run redis-server on your device.<br>
+* **without_redis** : This code in this branch does not implement cahing and hence can be easily cloned and run without the need to setup redis.
 
 ## Screens for Buyer-role
 
