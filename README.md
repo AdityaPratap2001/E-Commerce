@@ -15,7 +15,7 @@ Sellers can upload their products and keep track of their stocks, while the buye
 This repository has **2 Branches**:
 
 * **master** : This branch contains the code with the proper implementation of ***redis-caching***. Hence before running the code in this branch you should install and run redis-server on your device.<br>
-* **without_redis** : This code in this branch does not implement cahing and hence can be easily cloned and run without the need to setup redis.
+* **without_redis** : The code in this branch does not implement caching and hence can be directly cloned and run without the need to setup redis.
 
 ## Screens for Buyer-role
 
