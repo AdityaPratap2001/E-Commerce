@@ -1,6 +1,8 @@
 const Product = require("../models/Product");
 const User = require("../models/User");
 const crypto = require("crypto");
+const config = require("../config/config");
+const stripe = require("stripe")(config.STRIPE_PRIVATE_KEY);
 
 exports.getFeaturedProducts = (req, res, next) => {
   let featuredProducts = [];
@@ -102,7 +104,6 @@ exports.getProductById = (req, res, next) => {
     .then((productData) => {
       User.findOne({ email: email })
         .then((userData) => {
-
           let inWishlist = false;
           let inCart = false;
 
@@ -239,7 +240,6 @@ exports.addProduct = (req, res, next) => {
     });
 };
 
-
 //-------WISHLIST-CONTROLLER-------------//
 
 exports.addToWishlist = (req, res, next) => {
@@ -354,7 +354,6 @@ exports.removeFromCart = (req, res, next) => {
     });
 };
 
-
 exports.moveFromCartToWishlist = (req, res, next) => {
   let userEmail = req.body.username;
   let productId = req.body.productId;
@@ -387,50 +386,119 @@ exports.moveFromCartToWishlist = (req, res, next) => {
 //------ORDERS--------//
 
 // PLACING ORDER
-exports.placeOrder = (req, res, next) => {
-  let userEmail = req.body.email;
+// exports.placeOrder = (req, res, next) => {
+//   let userEmail = req.body.email;
 
-  User.findOne({ email: userEmail })
-    .populate({
-      path: "cart",
-      populate: {
-        path: "product",
-      },
-    })
-    .then((userData) => {
-      let orderTotal = 50;
-      let orderDate = new Date();
-      let orderList = [];
+//   User.findOne({ email: userEmail })
+//     .populate({
+//       path: "cart",
+//       populate: {
+//         path: "product",
+//       },
+//     })
+//     .then((userData) => {
+//       let orderTotal = 50;
+//       let orderDate = new Date();
+//       let orderList = [];
 
-      userData.cart.map((cartItem) => {
-        orderList.push(cartItem);
-        orderTotal +=
-          Number(cartItem.product.price) * Number(cartItem.quantity);
+//       userData.cart.map((cartItem) => {
+//         orderList.push(cartItem);
+//         orderTotal +=
+//           Number(cartItem.product.price) * Number(cartItem.quantity);
 
-        Product.findOne({ _id: cartItem.product._id }).then((productData) => {
-          let newStock = productData.stock - cartItem.quantity;
-          productData.stock = newStock;
-          productData.save();
-        });
-      });
+//         Product.findOne({ _id: cartItem.product._id }).then((productData) => {
+//           let newStock = productData.stock - cartItem.quantity;
+//           productData.stock = newStock;
+//           productData.save();
+//         });
+//       });
 
-      let newOrder = {
-        orderValue: orderTotal,
-        orderDate: orderDate.toString(),
-        productList: orderList,
-        orderId: crypto.randomBytes(12).toString("hex"),
-      };
+//       let newOrder = {
+//         orderValue: orderTotal,
+//         orderDate: orderDate.toString(),
+//         productList: orderList,
+//         orderId: crypto.randomBytes(12).toString("hex"),
+//       };
 
-      let newOrderList = [...userData.orders, newOrder];
-      userData.orders = newOrderList;
-      userData.cart = [];
-      userData.save();
+//       let newOrderList = [...userData.orders, newOrder];
+//       userData.orders = newOrderList;
+//       userData.cart = [];
+//       userData.save();
 
-      res.status(200).send("Order placed successfully!");
-    })
-    .catch((err) => {
-      throw err;
+//       res.status(200).send("Order placed successfully!");
+//     })
+//     .catch((err) => {
+//       throw err;
+//     });
+// };
+exports.placeOrder = async (req, res, next) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: "Some-tshirt",
+            },
+            unit_amount: 10000,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${config.SERVER_URL}/cart`,
+      cancel_url: `${config.SERVER_URL}/cart`,
     });
+    res.json({ url: session.url });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+
+  // let userEmail = req.body.email;
+
+  // User.findOne({ email: userEmail })
+  //   .populate({
+  //     path: "cart",
+  //     populate: {
+  //       path: "product",
+  //     },
+  //   })
+  //   .then((userData) => {
+  //     let orderTotal = 50;
+  //     let orderDate = new Date();
+  //     let orderList = [];
+
+  //     userData.cart.map((cartItem) => {
+  //       orderList.push(cartItem);
+  //       orderTotal +=
+  //         Number(cartItem.product.price) * Number(cartItem.quantity);
+
+  //       Product.findOne({ _id: cartItem.product._id }).then((productData) => {
+  //         let newStock = productData.stock - cartItem.quantity;
+  //         productData.stock = newStock;
+  //         productData.save();
+  //       });
+  //     });
+
+  //     let newOrder = {
+  //       orderValue: orderTotal,
+  //       orderDate: orderDate.toString(),
+  //       productList: orderList,
+  //       orderId: crypto.randomBytes(12).toString("hex"),
+  //     };
+
+  //     let newOrderList = [...userData.orders, newOrder];
+  //     userData.orders = newOrderList;
+  //     userData.cart = [];
+  //     userData.save();
+
+  //     res.status(200).send("Order placed successfully!");
+  //   })
+  //   .catch((err) => {
+  //     throw err;
+  //   });
 };
 
 // GET PAST-ORDERS

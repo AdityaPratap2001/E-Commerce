@@ -56,6 +56,22 @@ class Cart extends Component {
     });
   }
 
+  // placeOrder = () => {
+  //   let userId = localStorage.getItem("username");
+  //   // console.log(userId);
+  //   this.setState({ loading: true });
+  //   ServerService.placeOrder(userId)
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status === 200) {
+  //         this.setState({ loading: false });
+  //         this.setState({ transactionComplete: true });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err);
+  //     });
+  // };
   placeOrder = () => {
     let userId = localStorage.getItem("username");
     // console.log(userId);
@@ -63,13 +79,10 @@ class Cart extends Component {
     ServerService.placeOrder(userId)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) {
-          this.setState({ loading: false });
-          this.setState({ transactionComplete: true });
-        }
+        // window.location = res.data.url;
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
